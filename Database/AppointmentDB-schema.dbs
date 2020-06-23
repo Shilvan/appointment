@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Appointment" id="Project_bd64b7" database="PostgreSQL" >
+	<schema name="appointment" >
+		<table name="blocked_slots_tbl" generator_rows="100" >
+			<comment><![CDATA[It containes slots for which exceptionally the employee is not available]]></comment>
+			<column name="blocked_slot_id" type="smallserial" jt="5" mandatory="y" />
+			<column name="blocked_slot_start" type="timestamp" jt="93" mandatory="y" >
+				<comment><![CDATA[The time and date at which the absence starts]]></comment>
+			</column>
+			<column name="blocked_slot_end" type="time" jt="92" mandatory="y" >
+				<comment><![CDATA[The time and date at which the absence ends]]></comment>
+			</column>
+			<column name="employee_id" type="bigint" jt="-5" mandatory="y" >
+				<comment><![CDATA[The employee that is going to be absent]]></comment>
+			</column>
+			<index name="pk_blocked_slots_tbl_block_slot_id" unique="PRIMARY_KEY" >
+				<column name="blocked_slot_id" />
+			</index>
+		</table>
+		<table name="booking_service_link_tbl" generator_rows="100" >
+			<comment><![CDATA[Add multiple services to single booking]]></comment>
+			<column name="booking_id" type="bigint" jt="-5" mandatory="y" />
+			<column name="service_id" type="smallint" jt="5" mandatory="y" />
+		</table>
+		<table name="bookings_tbl" generator_rows="150" spec="" >
+			<comment><![CDATA[Contains all the data of client's bookings]]></comment>
+			<column name="booking_id" type="bigserial" jt="-5" mandatory="y" />
+			<column name="booking_date" type="timestamp" jt="93" mandatory="y" >
+				<comment><![CDATA[Date in which the booking was made]]></comment>
+			</column>
+			<column name="service_date" type="timestamp" jt="93" mandatory="y" >
+				<comment><![CDATA[Date in which the service will take place]]></comment>
+			</column>
+			<column name="employee_id" type="bigint" jt="-5" mandatory="y" >
+				<comment><![CDATA[The employe that will be providing the service]]></comment>
+			</column>
+			<column name="customer_id" type="bigint" jt="-5" mandatory="y" >
+				<comment><![CDATA[Information about the customer that made the booking]]></comment>
+			</column>
+			<fk name="fk_bookings_tbl_booking_service_link_tbl" to_schema="appointment" to_table="booking_service_link_tbl" >
+				<fk_column name="booking_id" pk="booking_id" />
+			</fk>
+		</table>
+		<table name="branches_tbl" generator_rows="337" >
+			<comment><![CDATA[Information about the branches owned by the company]]></comment>
+			<column name="branch_id" type="smallserial" jt="5" mandatory="y" />
+			<column name="branch_name" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[The full name assigned to to the specific branch]]></comment>
+			</column>
+			<column name="location_id" type="smallint" jt="5" mandatory="y" >
+				<comment><![CDATA[The location of the branch]]></comment>
+			</column>
+			<column name="slots_conf__id" type="smallint" jt="5" mandatory="y" >
+				<comment><![CDATA[Slots settings]]></comment>
+			</column>
+			<fk name="fk_branch_tbl_employee_tbl" to_schema="appointment" to_table="employees_tbl" >
+				<fk_column name="branch_id" pk="branch_id" />
+			</fk>
+		</table>
+		<table name="customers_tbl" generator_rows="225" >
+			<comment><![CDATA[Information about registered customers]]></comment>
+			<column name="customer_id" type="bigint" jt="-5" mandatory="y" />
+			<column name="customer_fullname" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[The full name of a customer]]></comment>
+			</column>
+			<column name="customer_phone" type="varchar" length="20" jt="12" mandatory="y" >
+				<comment><![CDATA[(UNIQUE) Mobile phone number]]></comment>
+			</column>
+			<column name="customer_email" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[(UNIQUE) Customer's email]]></comment>
+			</column>
+			<fk name="fk_customer_tbl_booking_tbl" to_schema="appointment" to_table="bookings_tbl" >
+				<fk_column name="customer_id" pk="customer_id" />
+			</fk>
+		</table>
+		<table name="employees_tbl" generator_rows="225" >
+			<comment><![CDATA[Information about all the employees of the company]]></comment>
+			<column name="employee_id" type="bigserial" jt="-5" mandatory="y" />
+			<column name="employee_forename" type="varchar" length="50" jt="12" mandatory="y" >
+				<comment><![CDATA[Employee's first name]]></comment>
+			</column>
+			<column name="employee_surname" type="varchar" length="50" jt="12" mandatory="y" >
+				<comment><![CDATA[Employee's last name]]></comment>
+			</column>
+			<column name="position_id" type="smallint" jt="5" mandatory="y" >
+				<comment><![CDATA[The position of the particular employee]]></comment>
+			</column>
+			<column name="branch_id" type="smallint" jt="5" mandatory="y" >
+				<comment><![CDATA[The branch for which the employee works]]></comment>
+			</column>
+			<fk name="fk_employee_tbl_booking_tbl" to_schema="appointment" to_table="bookings_tbl" >
+				<fk_column name="employee_id" pk="employee_id" />
+			</fk>
+			<fk name="fk_employee_tbl_blocked_slot_tbl" to_schema="appointment" to_table="blocked_slots_tbl" >
+				<fk_column name="employee_id" pk="employee_id" />
+			</fk>
+		</table>
+		<table name="locations_tbl" generator_rows="505" >
+			<comment><![CDATA[Full address of a unique branch]]></comment>
+			<column name="location_id" type="smallserial" jt="5" mandatory="y" />
+			<column name="location_country" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[Full name of the country]]></comment>
+			</column>
+			<column name="location_city" type="varchar" length="100" jt="12" >
+				<comment><![CDATA[Full name of the city]]></comment>
+			</column>
+			<column name="location_address" type="varchar" length="200" jt="12" mandatory="y" >
+				<comment><![CDATA[Street and building number]]></comment>
+			</column>
+			<column name="location_postcode" type="varchar" length="50" jt="12" mandatory="y" >
+				<comment><![CDATA[Postcode of the branch]]></comment>
+			</column>
+			<column name="location_timezone" type="varchar" length="20" jt="12" >
+				<comment><![CDATA[The timezone code of the location, e.g: GMT, EDT, IOT, EAT... (names are validated  through pg_timezone_names)]]></comment>
+			</column>
+			<index name="pk_location_tbl_location_id" unique="PRIMARY_KEY" >
+				<column name="location_id" />
+			</index>
+			<fk name="fk_locations_tbl_branches_tbl" to_schema="appointment" to_table="branches_tbl" >
+				<fk_column name="location_id" pk="location_id" />
+			</fk>
+		</table>
+		<table name="position_service_link_tbl" generator_rows="100" >
+			<comment><![CDATA[It specifies in multiple instances all the services that an employee in a certain position would provide]]></comment>
+			<column name="position_id" type="smallint" jt="5" mandatory="y" />
+			<column name="service_id" type="smallint" jt="5" mandatory="y" />
+		</table>
+		<table name="position_shift_link_tbl" generator_rows="100" >
+			<comment><![CDATA[The different shifts that positions can have, e.g.: general, summer, weekends, bank holidays...]]></comment>
+			<column name="position_id" type="smallint" jt="5" mandatory="y" />
+			<column name="shift_id" type="integer" jt="4" mandatory="y" />
+		</table>
+		<table name="positions_tbl" generator_rows="337" >
+			<comment><![CDATA[The different positions that employees could assume]]></comment>
+			<column name="position_id" type="smallint" jt="5" mandatory="y" />
+			<column name="position_name" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[(UNIQUE) The name of the position of the employee]]></comment>
+			</column>
+			<fk name="fk_position_tbl_provider_service_link_tbl" to_schema="appointment" to_table="position_service_link_tbl" >
+				<fk_column name="position_id" pk="position_id" />
+			</fk>
+			<fk name="fk_position_tbl_employee_tbl" to_schema="appointment" to_table="employees_tbl" >
+				<fk_column name="position_id" pk="position_id" />
+			</fk>
+			<fk name="fk_position_tbl_shift_staff_link_tbl" to_schema="appointment" to_table="position_shift_link_tbl" >
+				<fk_column name="position_id" pk="position_id" />
+			</fk>
+		</table>
+		<table name="services_tbl" generator_rows="150" >
+			<comment><![CDATA[All the services that the company can provide]]></comment>
+			<column name="service_id" type="smallserial" jt="5" mandatory="y" />
+			<column name="service_name" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[(UNIQUE) The way the company calls the service]]></comment>
+			</column>
+			<column name="service_prep_duration" type="smallint" jt="5" >
+				<comment><![CDATA[The minutes that the employee needs before the service can be provided (setting the equipment needed...)]]></comment>
+			</column>
+			<column name="service_duration" type="smallint" jt="5" mandatory="y" >
+				<comment><![CDATA[The duration of the service in minutes]]></comment>
+			</column>
+			<column name="service_cleanup_duration" type="smallint" jt="5" >
+				<comment><![CDATA[The minutes that the employee needs before another service can be provided (cleaning...)]]></comment>
+			</column>
+			<column name="service_price" type="money" jt="3" mandatory="y" >
+				<comment><![CDATA[The full price of the service]]></comment>
+			</column>
+			<fk name="fk_service_tbl_provider_service_tbl" to_schema="appointment" to_table="position_service_link_tbl" >
+				<fk_column name="service_id" pk="service_id" />
+			</fk>
+			<fk name="fk_services_tbl_booking_service_link_tbl" to_schema="appointment" to_table="booking_service_link_tbl" >
+				<fk_column name="service_id" pk="service_id" />
+			</fk>
+		</table>
+		<table name="shifts_tbl" generator_rows="150" >
+			<comment><![CDATA[The shift for a specified range of dates (The shifts with the shortest range will precede others)]]></comment>
+			<column name="shift_id" type="serial" jt="4" mandatory="y" />
+			<column name="shift_name" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[E.g.: manager's summer shift]]></comment>
+			</column>
+			<column name="shift_date_start" type="date" jt="91" >
+				<comment><![CDATA[The date at which the shift will be effective (if null, it will be applied to every day and shifts with specified dates will take precedence)]]></comment>
+			</column>
+			<column name="shift_date_end" type="date" jt="91" >
+				<comment><![CDATA[The end date of the specified shift]]></comment>
+			</column>
+			<column name="shift_starting_time" type="time" jt="92" mandatory="y" >
+				<comment><![CDATA[The time at which the shift will start]]></comment>
+			</column>
+			<column name="shift_break_start" type="time" jt="92" >
+				<comment><![CDATA[The time at which the employees will have a break if there is one]]></comment>
+			</column>
+			<column name="shift_break_end" type="time" jt="92" >
+				<comment><![CDATA[The time at which the break will end if there is one]]></comment>
+			</column>
+			<column name="shift_ending_time" type="time" jt="92" mandatory="y" >
+				<comment><![CDATA[The time at which the shift will end]]></comment>
+			</column>
+			<column name="shift_dayofweek" type="smallint[]" jt="2003" >
+				<comment><![CDATA[It restricts the shift to certain days or day of the week (1=Monday, 2=Tuesday, 3=Wednesday, 4=Thursday... 7=Sunday)]]></comment>
+			</column>
+			<column name="shift_position" type="smallint[]" jt="2003" >
+				<comment><![CDATA[Position in month, e.g.: 1 = the first of the month
+(If a day of the week is specified, let's say Monday, it will take place the first Monday of the month)
+CONSTRAINT:
+The position number cannot exceed the month days or weeks in case of having specified the day of the week prior.]]></comment>
+			</column>
+			<fk name="fk_shift_tbl_shift_staff_link_tbl" to_schema="appointment" to_table="position_shift_link_tbl" >
+				<fk_column name="shift_id" pk="shift_id" />
+			</fk>
+		</table>
+		<table name="slots_confs_tbl" generator_rows="505" >
+			<comment><![CDATA[Slots configurations]]></comment>
+			<column name="slots_conf_id" type="smallserial" jt="5" mandatory="y" />
+			<column name="slots_conf_available" type="smallint" jt="5" >
+				<comment><![CDATA[The months from now that have slots opened to book, e.g.: 2 months = the calendar will always have 2 months worth of opened slots]]></comment>
+			</column>
+			<column name="slots_conf_interval" type="smallint" jt="5" mandatory="y" >
+				<comment><![CDATA[The times at which services can be booked, e.g.: each 30 minutes = 12:00, 12:30, 13:00...]]></comment>
+			</column>
+			<column name="slots_conf_break" type="smallint" jt="5" mandatory="y" >
+				<comment><![CDATA[If the minimum break is 5 minutes, and a booking finishes at 12:10, instead of waiting until 12:30 (30 minutes interval), the next slot will be at 12:15.
+
+Or in case of having a booking at 12:30 and the appointment lasts 30 minutes, instead of opening a slot at 12:30, it will open it at 12:35.
+
+The next slot will always be rounded up to a number finishing in 0 or 5.]]></comment>
+			</column>
+			<fk name="fk_slots_tbl_branches_tbl" to_schema="appointment" to_table="branches_tbl" >
+				<fk_column name="slots_conf_id" pk="slots_conf__id" />
+			</fk>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout_34c951b" show_relation="columns" >
+		<comment><![CDATA[Appointment]]></comment>
+		<entity schema="appointment" name="blocked_slots_tbl" color="FFFF00" x="48" y="416" />
+		<entity schema="appointment" name="booking_service_link_tbl" color="C1D8EE" x="816" y="256" />
+		<entity schema="appointment" name="bookings_tbl" color="FF0000" x="560" y="224" />
+		<entity schema="appointment" name="branches_tbl" color="00FF00" x="304" y="80" />
+		<entity schema="appointment" name="customers_tbl" color="C4E0F9" x="816" y="80" />
+		<entity schema="appointment" name="employees_tbl" color="FFFF00" x="320" y="416" />
+		<entity schema="appointment" name="locations_tbl" color="00FF00" x="48" y="80" />
+		<entity schema="appointment" name="position_service_link_tbl" color="0000FF" x="816" y="656" />
+		<entity schema="appointment" name="position_shift_link_tbl" color="FFFF00" x="240" y="688" />
+		<entity schema="appointment" name="positions_tbl" color="FFFF00" x="368" y="560" />
+		<entity schema="appointment" name="services_tbl" color="0000FF" x="816" y="400" />
+		<entity schema="appointment" name="shifts_tbl" color="FFFF00" x="48" y="560" />
+		<entity schema="appointment" name="slots_confs_tbl" color="00FF00" x="48" y="240" />
+		<group name="Group_Employees" color="FFFF00" >
+			<comment><![CDATA[Only the Admin and branch manager can change this]]></comment>
+			<entity schema="appointment" name="blocked_slots_tbl" />
+			<entity schema="appointment" name="employees_tbl" />
+			<entity schema="appointment" name="positions_tbl" />
+			<entity schema="appointment" name="position_shift_link_tbl" />
+			<entity schema="appointment" name="shifts_tbl" />
+		</group>
+		<group name="Group_Services" color="0000FF" >
+			<comment><![CDATA[Only the Admin and branch manager can change this]]></comment>
+			<entity schema="appointment" name="position_service_link_tbl" />
+			<entity schema="appointment" name="services_tbl" />
+			<entity schema="appointment" name="booking_service_link_tbl" />
+		</group>
+		<group name="Group_Branches" color="00FF00" >
+			<comment><![CDATA[The global admin is the only one that can change this]]></comment>
+			<entity schema="appointment" name="branches_tbl" />
+			<entity schema="appointment" name="locations_tbl" />
+			<entity schema="appointment" name="slots_confs_tbl" />
+		</group>
+		<group name="Group_Customers" color="C4E0F9" >
+			<comment><![CDATA[Only the Admin and branch manager can change this]]></comment>
+			<entity schema="appointment" name="customers_tbl" />
+		</group>
+	</layout>
+</project>
