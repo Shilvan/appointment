@@ -1,0 +1,1 @@
+{"rsync":{"/home/vagrant/provision":{"type":"rsync","guestpath":"/home/vagrant/provision","hostpath":"/home/leenym/Documents/Appointment/Cuttem/vagrant","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}
