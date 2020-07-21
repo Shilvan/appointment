@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+	<link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
+	<meta name="viewport" content ="width=device-width,initial-scale=1.0,user-scalable=yes" />
+
+	<!--<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />-->
+
+	<link rel="stylesheet" type="text/css" href="static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="static/css/style.css">
+	<link rel="stylesheet" type="text/css" href="static/css/login.css">
+</head>
+<body class="bg-blue">
+
+	
+
+	<div class="height-style-2"></div>
+	<header>
+		
+	</header>
+	<main>
+		<section id="login-section">
+			<div class="login-module  module-background">
+
+				<h1 class="page-header" id="login-label">WELCOME</h1>
+				
+				<div id="forms-wrapper">
+					<form class="login-form">
+					    <input class="input-user-form" name="name" type="text" required>
+					    <label class="label-user-form">Username</label>
+					</form>
+					<form class="login-form">
+						<input class="input-user-form" name="email" type="password" required>
+					    <label class="label-user-form">Password</label>
+					    <a href="#" class="" id="passwd-reset">Forgot your password?</a>
+
+					</form>
+					
+				</div>	
+
+				<a href="#" class="general-btn bordered-btn" id="addbtn">LOGIN</a>
+				<a href="#" class="general-btn link-btn">Create account</a>
+
+			</div>
+			
+
+		</section>
+
+
+	</main>
+	<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script src="{{ url_for('static', filename='js/inputmask/dist/jquery.inputmask.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/inputmask/dist/bindings/inputmask.binding.js') }}"></script>
+
+	<!--<script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script> custom bar-->
+	<script src="static/js/dashboard.js"></script>
+</body>
+</html>
