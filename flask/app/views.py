@@ -41,6 +41,11 @@ def cuttem():
     return render_template("public/cuttem.html")
 
 
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+
 @app.route("/appointment", methods=["POST", "GET"])
 def appointment():
     if request.method == 'POST':
