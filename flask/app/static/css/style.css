@@ -559,7 +559,7 @@ select:-webkit-autofill:focus {
 .label-user-form{
 	display: block;
 
-	color: gray; 
+	color: dimgrey; 
 	font-size:19px;
 	pointer-events:none;
 
