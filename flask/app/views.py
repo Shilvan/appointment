@@ -14,7 +14,7 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.secret_key = "password"
 app.permanent_session_lifetime = timedelta(minutes=5)
 
-
+# postgresql://user:password@database_server_IP
 engine = create_engine("postgres://localhost/AppointmentDB")
 
 lower = 0
