@@ -14,7 +14,7 @@ var main = function(){
 			$(this).text("Go back to login page");
 		} 
 		else{
-			$("#login").text("LOGIN");
+			$("#login").text("LOG IN");
 			$("#register-form").css("display", "none");
 			$("#confirm-passwd").css("display", "none");
 			$("#passwd-reset").css("display", "flex"); //the normal display is flex
@@ -23,43 +23,12 @@ var main = function(){
 		
 	});
 
-	/*FOOTER BUTTONS*/
-	$("#confirmbtn").on("click", function(event){
-		/*send data to python*/
-		console.log("save data to the database");
 
-		//var readable_date = weekdays[clickedDate.getDay()]+", "+clickedDate.getDate()+" "+months[clickedDate.getMonth()]+" "+clickedDate.getFullYear();
-		var postgres_date = clickedDate.getFullYear() + "-" + (clickedDate.getMonth()+1) + "-" + clickedDate.getDate();
-		var time =  $("input[name='A']:checked").val();
-		var name = $("input[name='name']").val();
-		var email = $("input[name='email']").val();
-		var phone = $("input[name='phone']").val();
-		var service = $('#service-dropdown-title').data("service");
-		var provider = $('#provider-dropdown-title').data("provider");
-
-		var data = {'date': postgres_date, 'time': time, 'name': name, 'email': email, 'phone': phone, 'service': service, 'provider': provider};
-		
-		$.ajax({
-			url: '/appointment',
-			type: 'POST',
-			data: JSON.stringify(data),
-			dataType: 'json'
-		}).done(function(data){
-			$("header").css("display", "none");
-			$("main").css("display", "none");
-			$(".confirmed-view").css("display", "grid");
-		});
-	
-		/*display confirmed page
-		$("header").css("display", "none");
-		$("main").css("display", "none");
-		$(".confirmed-view").css("display", "grid");*/
-	});
 
 	$("#login").on("click", function(event){
-		if ($(this).text() == "LOGIN") {
+		if ($(this).text() == "LOG IN") {
 
-			console.log("login");
+			console.log("log in");
 
 			
 			var username =  $("input[name='username']").val();
@@ -75,7 +44,7 @@ var main = function(){
 			}).done(function(data){
 				console.log(data);
 				console.log("function done");
-				window.location.href = response.redirect;
+				$("#login-section").css("display", "none")
 
 
 			});

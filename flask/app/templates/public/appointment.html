@@ -9,8 +9,56 @@
 
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+	
 </head>
 <body class="bg-blue">
+
+	<div id="login-section">
+		<div class="login-module  module-background">
+
+			<h1 class="page-header" id="login-label">WELCOME</h1>
+			
+			<div class="forms-wrapper" id="register-form">
+				<form class="">
+				    <input class="input-user-form" name="name" type="text" required>
+				    <label class="label-user-form">Name</label>
+				</form>
+				<form class="">
+				    <input class="input-user-form" name="email" type="text" required>
+				    <label class="label-user-form">Email</label>
+				</form>
+				<form class="">
+				    <input class="input-user-form" name="phone" type="text" required>
+				    <label class="label-user-form">Phone</label>
+				</form>
+			</div>
+
+
+			<div class="forms-wrapper">
+				<form class="login-form">
+				    <input class="input-user-form" name="username" type="text" required>
+				    <label class="label-user-form">Username</label>
+				</form>
+				<form class="login-form">
+					<input class="input-user-form" name="password" type="password" required>
+				    <label class="label-user-form">Password</label>
+				    <a href="#" class="" id="passwd-reset">Forgot your password?</a>
+				</form>
+			</div>	
+			
+			<div class="forms-wrapper">
+				<form class="" id="confirm-passwd">
+					<input class="input-user-form" name="confirm-password" type="password" required>
+				    <label class="label-user-form">Confirm Password</label>
+				</form>
+			</div>
+
+			<a class="general-btn bordered-btn" id="login">LOG IN</a>
+			<a class="general-btn link-btn" id="register">Create account</a>
+		</div>
+	</div>
+
 	<header>
 		<h1 class="page-header">BOOK APPOINTMENT</h1>
 	</header>
@@ -311,6 +359,7 @@
 
 	<!--<script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script> custom bar-->
 	<script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/login.js') }}"></script>
 
 
 </body>
