@@ -317,10 +317,11 @@ nav{
 }
 
 /**/
-.login-form{
-	margin-bottom:5px;
+#register-form{
+	margin-bottom: 20px;
 
 }
+
 
 #passwd-reset{
 	text-decoration: none;
@@ -346,6 +347,15 @@ nav{
 	margin: 20px 0 30px;
 }
 
+
+/**/
+#register-form{
+	display: none;
+}
+
+#confirm-passwd{
+	display: none;
+}
 
 
 @media screen and (max-width: 1000px){

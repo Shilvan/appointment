@@ -25,22 +25,43 @@
 
 				<h1 class="page-header" id="login-label">WELCOME</h1>
 				
-				<div id="forms-wrapper">
-					<form class="login-form">
+				<div class="forms-wrapper" id="register-form">
+					<form class="">
 					    <input class="input-user-form" name="name" type="text" required>
+					    <label class="label-user-form">Name</label>
+					</form>
+					<form class="">
+					    <input class="input-user-form" name="email" type="text" required>
+					    <label class="label-user-form">Email</label>
+					</form>
+					<form class="">
+					    <input class="input-user-form" name="phone" type="text" required>
+					    <label class="label-user-form">Phone</label>
+					</form>
+				</div>
+
+
+				<div class="forms-wrapper">
+					<form class="login-form">
+					    <input class="input-user-form" name="username" type="text" required>
 					    <label class="label-user-form">Username</label>
 					</form>
 					<form class="login-form">
-						<input class="input-user-form" name="email" type="password" required>
+						<input class="input-user-form" name="password" type="password" required>
 					    <label class="label-user-form">Password</label>
 					    <a href="#" class="" id="passwd-reset">Forgot your password?</a>
-
 					</form>
-					
 				</div>	
+				
+				<div class="forms-wrapper">
+					<form class="" id="confirm-passwd">
+						<input class="input-user-form" name="confirm-password" type="password" required>
+					    <label class="label-user-form">Confirm Password</label>
+					</form>
+				</div>
 
-				<a href="#" class="general-btn bordered-btn" id="addbtn">LOGIN</a>
-				<a href="#" class="general-btn link-btn">Create account</a>
+				<a class="general-btn bordered-btn" id="login">LOGIN</a>
+				<a class="general-btn link-btn" id="register">Create account</a>
 
 			</div>
 			
@@ -54,6 +75,6 @@
 	<script src="{{ url_for('static', filename='js/inputmask/dist/bindings/inputmask.binding.js') }}"></script>
 
 	<!--<script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script> custom bar-->
-	<script src="static/js/dashboard.js"></script>
+	<script src="static/js/login.js"></script>
 </body>
 </html>

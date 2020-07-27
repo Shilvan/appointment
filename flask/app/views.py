@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, jsonify, session, url_for, request, redirect
+from flask import Flask, render_template, jsonify, session, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database, drop_database
@@ -41,8 +41,18 @@ def cuttem():
     return render_template("public/cuttem.html")
 
 
-@app.route("/login")
+@app.route("/login", methods=["POST", "GET"])
 def login():
+    if request.method == 'POST':
+        rf = request.form
+        for key in rf.keys():
+            data = key
+        data_dict = json.loads(data)
+        print(data_dict)
+        resp_dic = {'msg': 'Successful'}
+        resp = jsonify(resp_dic)
+        return resp
+
     return render_template("login.html")
 
 
