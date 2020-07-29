@@ -21,6 +21,9 @@ body{
 .bg-green{
 	background-color: #75de87;
 }
+.bg-gray{
+	background-color: gray;
+}
 
 /**/
 h1{
@@ -568,7 +571,7 @@ select:-webkit-autofill:focus {
 	transition:0.2s ease all; 
 }
 
-.input-user-form:focus ~ .label-user-form, .input-user-form:valid ~ .label-user-form{
+.input-user-form:focus + .label-user-form, .input-user-form:valid + .label-user-form{
 	bottom:40px;/*CHANGE*/
   	font-size:12px;
   	/*color: black;*/

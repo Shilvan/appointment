@@ -3,11 +3,13 @@ var main = function(){
 	"use strict";
 
 	
-
+	
 
 	$("#register").on("click", function(event){
 		if ($("#register-form").css("display") == "none") {
 			$("#login").text("REGISTER");
+			$("#login-form").css("display", "none");
+
 			$("#register-form").css("display", "block");
 			$("#confirm-passwd").css("display", "block");
 			$("#passwd-reset").css("display", "none"); //the normal display is flex
@@ -15,6 +17,8 @@ var main = function(){
 		} 
 		else{
 			$("#login").text("LOG IN");
+			$("#login-form").css("display", "block");
+
 			$("#register-form").css("display", "none");
 			$("#confirm-passwd").css("display", "none");
 			$("#passwd-reset").css("display", "flex"); //the normal display is flex
@@ -24,9 +28,10 @@ var main = function(){
 	});
 
 
+	$("#login").on("click", login);
 
-	$("#login").on("click", function(event){
-		if ($(this).text() == "LOG IN") {
+	function login(){
+		if ($("#login").text() == "LOG IN") {
 
 			console.log("log in");
 
@@ -42,19 +47,67 @@ var main = function(){
 				data: JSON.stringify(data),
 				dataType: 'json'
 			}).done(function(data){
-				console.log(data);
-				console.log("function done");
-				$("#login-section").css("display", "none")
 
+				//console.log(window.location);
+				//console.log(window.location.origin)
+
+			
+
+				if (data.msg == "Successful") {
+					//$("#login-section").css("display", "none");
+					location.replace('/appointment');
+					//window.navigate("{{ url_for('index') }}");
+				}else{
+					alert("INCORRECT PASSWORD OR USERNAME");
+				}
+				
 
 			});
 
-		} else if ($(this).text() == "REGISTER") {
+		} else if ($("#login").text() == "REGISTER") {
 			console.log("register");
 
 		}
 
+	};
+
+
+	$('#login-form').on('keydown', 'input', function (event) {
+	    if (event.which == 13) {
+	    	event.preventDefault();
+		    var $this = $(event.target);
+		    var index = parseFloat($this.attr('data-index'));
+
+	    	if (index == 2) {
+	    		login();
+
+	    	} else{
+	    		
+		        $('[data-index="' + (index + 1).toString() + '"]').focus();
+	    	}
+	        
+	    }
 	});
+
+	$('#register-form').on('keydown', 'input', function (event) {
+	    if (event.which == 13) {
+	    	event.preventDefault();
+		    var $this = $(event.target);
+		    var index = parseFloat($this.attr('data-index'));
+
+	    	if (index == 6) {
+	    		login();
+
+	    	} else{
+	    		
+		        $('[data-index="' + (index + 1).toString() + '"]').focus();
+	    	}
+	        
+	    }
+	});
+
+
+
 
 
 

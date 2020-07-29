@@ -20,7 +20,7 @@
 		
 	</header>
 	<main>
-		<div id="login-section">
+		<!--<div id="login-section">
 			<div class="login-module  module-background">
 
 				<h1 class="page-header" id="login-label">WELCOME</h1>
@@ -63,8 +63,56 @@
 				<a class="general-btn bordered-btn" id="login">LOG IN</a>
 				<a class="general-btn link-btn" id="register">Create account</a>
 			</div>
+		</div>-->
+
+		<div id="login-section">
+		<div class="login-module  module-background">
+
+			<h1 class="page-header" id="login-label">WELCOME</h1>
 			
+
+
+			<div class="forms-wrapper">
+				<form id="login-form">
+					<input class="input-user-form" name="username" type="text" data-index="1" required>
+				    <label class="label-user-form">Username</label>
+					<input class="input-user-form" name="password" type="password" data-index="2" required>
+				    <label class="label-user-form">Password</label>
+				    <a href="#" class="" id="passwd-reset">Forgot your password?</a>
+
+				</form>
+			</div>	
+			
+			<div class="forms-wrapper">
+				<form id="register-form">
+					<div style="margin-bottom: 20px;">
+						<input class="input-user-form" name="name" type="text" data-index="1" required>
+					    <label class="label-user-form">Name</label>
+					
+					    <input class="input-user-form" name="email" type="text" data-index="2" required>
+					    <label class="label-user-form">Email</label>
+					
+					    <input class="input-user-form" name="phone" type="text" data-index="3" required>
+					    <label class="label-user-form">Phone</label>
+						
+					</div>
+					
+
+					<input class="input-user-form" name="username" type="text" data-index="4" required>
+				    <label class="label-user-form">Username</label>
+
+					<input class="input-user-form" name="password" type="password" data-index="5" required>
+				    <label class="label-user-form">Password</label>
+				    
+					<input class="input-user-form" name="confirm-password" type="password" data-index="6" required>
+				    <label class="label-user-form">Confirm Password</label>
+				</form>
+			</div>
+
+			<a tabindex="0" class="general-btn bordered-btn" id="login">LOG IN</a>
+			<a tabindex="0" class="general-btn link-btn" id="register">Create account</a>
 		</div>
+	</div>
 
 
 	</main>
