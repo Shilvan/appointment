@@ -1,5 +1,5 @@
 from app import app
-from flask import Flask, render_template, jsonify, session, url_for, request, redirect
+from flask import Flask, render_template, jsonify, session, url_for, request, redirect, g
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database, drop_database
@@ -7,15 +7,28 @@ import psycopg2
 from datetime import date, timedelta
 import datetime
 import json
+from flask_login import LoginManager, UserMixin, login_user
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 
 app.secret_key = "password"
-app.permanent_session_lifetime = timedelta(minutes=5)
+#app.permanent_session_lifetime = timedelta(minutes=1)
+
+
+@app.before_request
+def before_request():
+    g.user = None
+    if 'user_id' in session:
+        user = 1  # get user by ID
+        g.user = user
+
+
+#user(id=1, username="Anthoney", password="password")
 
 # postgresql://user:password@database_server_IP
 engine = create_engine("postgres://localhost/AppointmentDB")
+
 
 lower = 0
 new_datetime = None
@@ -23,6 +36,10 @@ new_datetime = None
 
 @app.route("/")
 def index():
+    conn = engine.connect()
+    sql = "SELECT id FROM customers_tbl WHERE name = 'Walter Morreira';"
+    user = conn.execute(sql)
+    login_user(user)
     return render_template("public/index.html")
 
 
@@ -33,6 +50,8 @@ def contact():
 
 @app.route("/work")
 def work():
+    # if not g.user:
+      #  return redirect(url_for('login'))
     return render_template("public/work.html")
 
 
@@ -44,14 +63,42 @@ def cuttem():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == 'POST':
+        #session.pop('user_id', None)
+
         rf = request.form
         for key in rf.keys():
             data = key
         data_dict = json.loads(data)
-        print(data_dict)
-        resp_dic = {'msg': 'Successful'}
+        username = data_dict['username']
+        password = data_dict['password']
+
+        conn = engine.connect()
+        login_sql = "SELECT exists (SELECT id FROM customers_tbl WHERE username = %s AND password = %s);"
+        login_tupple = conn.execute(login_sql, (username, password))
+
+        for login_result in login_tupple:
+            login_val = login_result[0]
+
+        user_id = 1  # change this
+
+        resp_dic = {}
+
+        if login_val == True:
+            session['user_id'] = user_id
+            resp_dic = {'msg': 'Successful'}
+        else:
+            resp_dic = {'msg': 'Error'}
+
         resp = jsonify(resp_dic)
         return resp
+        # return redirect(url_for('work'))
+
+    if not g.user:
+        print("----> USER NOT LOGGED IN")
+    else:
+        print("----> USER LOGGED IN ALREADY")
+        print(g.user)
+        return redirect(url_for('appointment'))
 
     return render_template("login.html")
 
@@ -87,6 +134,9 @@ def appointment():
         return resp
 
     else:
+        if not g.user:
+            return redirect(url_for('login'))
+
         return render_template("public/appointment.html")
 
 
@@ -230,7 +280,7 @@ def bookings(date):
 
     d = datetime.datetime.strptime(date, '%Y-%m-%d')
     # put the employee ID in there
-    bookings_sql = "SELECT service_datetime, services_tbl.duration, services_tbl.name, customers_tbl.fullname FROM bookings_tbl INNER JOIN customers_tbl ON customers_tbl.id = bookings_tbl.customer_id INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id WHERE EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s ORDER BY service_datetime ASC;"
+    bookings_sql = "SELECT service_datetime, services_tbl.duration, services_tbl.name, customers_tbl.name FROM bookings_tbl INNER JOIN customers_tbl ON customers_tbl.id = bookings_tbl.customer_id INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id WHERE EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s ORDER BY service_datetime ASC;"
     bookings_tupple = conn.execute(
         bookings_sql, (d.year, d.month, d.day))
     booked_slotsArray = []
@@ -240,7 +290,7 @@ def bookings(date):
         bookingObj['time_end'] = (
             booking.service_datetime + timedelta(minutes=booking.duration)).strftime("%H:%M")
         bookingObj['service'] = booking.name
-        bookingObj['client'] = booking.fullname
+        bookingObj['client'] = booking.name
         booked_slotsArray.append(bookingObj)
     return jsonify({'bookings': booked_slotsArray})
 
