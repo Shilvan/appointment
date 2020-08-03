@@ -7,7 +7,7 @@ var main = function(){
 
 	$("#register").on("click", function(event){
 		if ($("#register-form").css("display") == "none") {
-			$("#login").text("REGISTER");
+			$("#login-public").text("REGISTER");
 			$("#login-form").css("display", "none");
 
 			$("#register-form").css("display", "block");
@@ -16,7 +16,7 @@ var main = function(){
 			$(this).text("Go back to login page");
 		} 
 		else{
-			$("#login").text("LOG IN");
+			$("#login-public").text("LOG IN");
 			$("#login-form").css("display", "block");
 
 			$("#register-form").css("display", "none");
@@ -28,10 +28,10 @@ var main = function(){
 	});
 
 
-	$("#login").on("click", login);
+	$("#login-public").on("click", login_public);
 
-	function login(){
-		if ($("#login").text() == "LOG IN") {
+	function login_public(){
+		if ($("#login-public").text() == "LOG IN") {
 
 			console.log("log in");
 
@@ -42,21 +42,14 @@ var main = function(){
 			var data = {'username': username, 'password': password};
 
 			$.ajax({
-				url: '/login',
+				url: '/appointment/login',
 				type: 'POST',
 				data: JSON.stringify(data),
 				dataType: 'json'
 			}).done(function(data){
 
-				//console.log(window.location);
-				//console.log(window.location.origin)
-
-			
-
 				if (data.msg == "Successful") {
-					//$("#login-section").css("display", "none");
 					location.replace('/appointment');
-					//window.navigate("{{ url_for('index') }}");
 				}else{
 					alert("INCORRECT PASSWORD OR USERNAME");
 				}
@@ -64,11 +57,10 @@ var main = function(){
 
 			});
 
-		} else if ($("#login").text() == "REGISTER") {
+		} else if ($("#login-public").text() == "REGISTER") {
 			console.log("register");
 
 		}
-
 	};
 
 
@@ -79,7 +71,7 @@ var main = function(){
 		    var index = parseFloat($this.attr('data-index'));
 
 	    	if (index == 2) {
-	    		login();
+	    		login_public();
 
 	    	} else{
 	    		
@@ -96,7 +88,7 @@ var main = function(){
 		    var index = parseFloat($this.attr('data-index'));
 
 	    	if (index == 6) {
-	    		login();
+	    		login_public();
 
 	    	} else{
 	    		
@@ -107,7 +99,42 @@ var main = function(){
 	});
 
 
+/**/
+	$("#login-dashboard").on("click", login_dashboard);
 
+	function login_dashboard(){
+		if ($("#login-dashboard").text() == "LOG IN") {
+			
+			var username =  $("input[name='username']").val();
+			var password = $("input[name='password']").val();
+
+			var data = {'username': username, 'password': password};
+
+			console.log("sending data to flask");
+
+			$.ajax({
+				url: '/dashboard/login',
+				type: 'POST',
+				data: JSON.stringify(data),
+				dataType: 'json'
+			}).done(function(data){
+
+				console.log("Result returning from flask");
+
+				if (data.msg == "Successful") {
+					location.replace('/dashboard');
+				}else{
+					alert("INCORRECT PASSWORD OR USERNAME");
+				}
+				
+
+			});
+
+		} else if ($("#login-dashboard").text() == "REGISTER") {
+			console.log("register");
+
+		}
+	};
 
 
 

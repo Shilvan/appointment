@@ -7,9 +7,9 @@
 
 	<!--<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />-->
 
-	<link rel="stylesheet" type="text/css" href="static/css/reset.css">
-	<link rel="stylesheet" type="text/css" href="static/css/style.css">
-	<link rel="stylesheet" type="text/css" href="static/css/login.css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body class="bg-blue">
 
@@ -20,55 +20,11 @@
 		
 	</header>
 	<main>
-		<!--<div id="login-section">
-			<div class="login-module  module-background">
-
-				<h1 class="page-header" id="login-label">WELCOME</h1>
-				
-				<div class="forms-wrapper" id="register-form">
-					<form class="">
-					    <input class="input-user-form" name="name" type="text" required>
-					    <label class="label-user-form">Name</label>
-					</form>
-					<form class="">
-					    <input class="input-user-form" name="email" type="text" required>
-					    <label class="label-user-form">Email</label>
-					</form>
-					<form class="">
-					    <input class="input-user-form" name="phone" type="text" required>
-					    <label class="label-user-form">Phone</label>
-					</form>
-				</div>
-
-
-				<div class="forms-wrapper">
-					<form class="login-form">
-					    <input class="input-user-form" name="username" type="text" required>
-					    <label class="label-user-form">Username</label>
-					</form>
-					<form class="login-form">
-						<input class="input-user-form" name="password" type="password" required>
-					    <label class="label-user-form">Password</label>
-					    <a href="#" class="" id="passwd-reset">Forgot your password?</a>
-					</form>
-				</div>	
-				
-				<div class="forms-wrapper">
-					<form class="" id="confirm-passwd">
-						<input class="input-user-form" name="confirm-password" type="password" required>
-					    <label class="label-user-form">Confirm Password</label>
-					</form>
-				</div>
-
-				<a class="general-btn bordered-btn" id="login">LOG IN</a>
-				<a class="general-btn link-btn" id="register">Create account</a>
-			</div>
-		</div>-->
 
 		<div id="login-section">
 		<div class="login-module  module-background">
 
-			<h1 class="page-header" id="login-label">WELCOME</h1>
+			<h1 class="page-header" id="login-label">DASHBOARD LOGIN</h1>
 			
 
 
@@ -83,7 +39,7 @@
 				</form>
 			</div>	
 			
-			<div class="forms-wrapper">
+			<!--<div class="forms-wrapper">
 				<form id="register-form">
 					<div style="margin-bottom: 20px;">
 						<input class="input-user-form" name="name" type="text" data-index="1" required>
@@ -107,10 +63,10 @@
 					<input class="input-user-form" name="confirm-password" type="password" data-index="6" required>
 				    <label class="label-user-form">Confirm Password</label>
 				</form>
-			</div>
+			</div>-->
 
-			<a tabindex="0" class="general-btn bordered-btn" id="login">LOG IN</a>
-			<a tabindex="0" class="general-btn link-btn" id="register">Create account</a>
+			<a tabindex="0" class="general-btn bordered-btn" id="login-dashboard">LOG IN</a>
+			<!--<a tabindex="0" class="general-btn link-btn" id="register">Create account</a>-->
 		</div>
 	</div>
 
@@ -121,6 +77,6 @@
 	<script src="{{ url_for('static', filename='js/inputmask/dist/bindings/inputmask.binding.js') }}"></script>
 
 	<!--<script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script> custom bar-->
-	<script src="static/js/login.js"></script>
+	<script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
 </html>

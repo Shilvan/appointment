@@ -19,12 +19,14 @@ app.secret_key = "password"
 @app.before_request
 def before_request():
     g.user = None
+    g.employee = None
     if 'user_id' in session:
-        user = 1  # get user by ID
+        user = 1  # get by the ID check https://www.youtube.com/watch?v=2Zz97NVbH0U
         g.user = user
+    if 'employee_id' in session:
+        employee = 1
+        g.employee = employee
 
-
-#user(id=1, username="Anthoney", password="password")
 
 # postgresql://user:password@database_server_IP
 engine = create_engine("postgres://localhost/AppointmentDB")
@@ -36,10 +38,6 @@ new_datetime = None
 
 @app.route("/")
 def index():
-    conn = engine.connect()
-    sql = "SELECT id FROM customers_tbl WHERE name = 'Walter Morreira';"
-    user = conn.execute(sql)
-    login_user(user)
     return render_template("public/index.html")
 
 
@@ -50,8 +48,6 @@ def contact():
 
 @app.route("/work")
 def work():
-    # if not g.user:
-      #  return redirect(url_for('login'))
     return render_template("public/work.html")
 
 
@@ -60,8 +56,8 @@ def cuttem():
     return render_template("public/cuttem.html")
 
 
-@app.route("/login", methods=["POST", "GET"])
-def login():
+@app.route("/appointment/login", methods=["POST", "GET"])
+def login_public():
     if request.method == 'POST':
         #session.pop('user_id', None)
 
@@ -100,7 +96,7 @@ def login():
         print(g.user)
         return redirect(url_for('appointment'))
 
-    return render_template("login.html")
+    return render_template("public/login-public.html")
 
 
 @app.route("/appointment", methods=["POST", "GET"])
@@ -135,14 +131,65 @@ def appointment():
 
     else:
         if not g.user:
-            return redirect(url_for('login'))
+            return redirect(url_for('login_public'))
 
         return render_template("public/appointment.html")
 
 
 @app.route("/dashboard")
 def dashboard():
+    if not g.employee:
+        return redirect(url_for('login_dashboard'))
     return render_template("admin/dashboard.html")
+
+
+@app.route("/dashboard/login", methods=["POST", "GET"])
+def login_dashboard():
+    if request.method == 'POST':
+        #session.pop('user_id', None)
+
+        rf = request.form
+        for key in rf.keys():
+            data = key
+        data_dict = json.loads(data)
+        username = data_dict['username']
+        password = data_dict['password']
+        """
+        conn = engine.connect()
+        login_sql = "SELECT exists (SELECT id FROM customers_tbl WHERE username = %s AND password = %s);"
+        login_tupple = conn.execute(login_sql, (username, password))
+
+        for login_result in login_tupple:
+            login_val = login_result[0]"""
+
+        if username == "admin" and password == "admin":
+            login_val = True
+        else:
+            login_val = False
+
+        employee_id = 1  # change this
+
+        resp_dic = {}
+
+        if login_val == True:
+            session['employee_id'] = employee_id
+            resp_dic = {'msg': 'Successful'}
+        else:
+            resp_dic = {'msg': 'Error'}
+
+        resp = jsonify(resp_dic)
+        return resp
+        # return redirect(url_for('work'))
+
+    if not g.employee:
+        print("----> EMPLOYEE NOT LOGGED IN")
+        print(g.employee)
+    else:
+        print("----> EMPLOYEE LOGGED IN ALREADY")
+        print(g.employee)
+        return redirect(url_for('dashboard'))
+
+    return render_template("admin/login-dashboard.html")
 
 
 # FETCH FROM JS
