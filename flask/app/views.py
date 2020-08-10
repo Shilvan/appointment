@@ -116,7 +116,7 @@ def appointment():
         conn = engine.connect()
         booking_sql = "INSERT INTO bookings_tbl (service_datetime, employee_id, customer_id) VALUES (%s, %s, %s) RETURNING id;"
         booking_id_tupple = conn.execute(
-            booking_sql, (service_datetime, data_dict['provider'], 1))
+            booking_sql, (service_datetime, data_dict['provider'], g.user))
 
         for booking_id in booking_id_tupple:
             booking_id_val = booking_id[0]
@@ -231,7 +231,7 @@ def service(branch):
 @app.route('/get_providers/<branch>/<service>')
 def provider(branch, service):
     conn = engine.connect()
-    sql = "SELECT employees_tbl.id, employees_tbl.forename, employees_tbl.lastname FROM employees_tbl INNER JOIN positions_services_link_tbl ON positions_services_link_tbl.position_id = employees_tbl.position_id INNER JOIN services_tbl ON services_tbl.id = positions_services_link_tbl.service_id WHERE positions_services_link_tbl.service_id = %s AND employees_tbl.branch_id = %s; "
+    sql = "SELECT employees_tbl.id, employees_tbl.firstname, employees_tbl.lastname FROM employees_tbl INNER JOIN positions_services_link_tbl ON positions_services_link_tbl.position_id = employees_tbl.position_id INNER JOIN services_tbl ON services_tbl.id = positions_services_link_tbl.service_id WHERE positions_services_link_tbl.service_id = %s AND employees_tbl.branch_id = %s; "
     employees = conn.execute(sql, (service, branch))
 
     employeesArray = []
@@ -239,7 +239,7 @@ def provider(branch, service):
     for employee in employees:
         employeeObj = {}
         employeeObj["id"] = employee.id
-        employeeObj["name"] = employee.forename + " " + employee.lastname
+        employeeObj["name"] = employee.firstname + " " + employee.lastname
         employeesArray.append(employeeObj)
 
     return jsonify({'providers': employeesArray})
@@ -340,7 +340,7 @@ def bookings(date):
 
     d = datetime.datetime.strptime(date, '%Y-%m-%d')
     # put the employee ID in there
-    bookings_sql = "SELECT service_datetime, services_tbl.duration, services_tbl.name, customers_tbl.name FROM bookings_tbl INNER JOIN customers_tbl ON customers_tbl.id = bookings_tbl.customer_id INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id WHERE EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s ORDER BY service_datetime ASC;"
+    bookings_sql = "SELECT service_datetime, services_tbl.duration, services_tbl.name, customers_tbl.lastname, customers_tbl.firstname FROM bookings_tbl INNER JOIN customers_tbl ON customers_tbl.id = bookings_tbl.customer_id INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id WHERE EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s ORDER BY service_datetime ASC;"
     bookings_tupple = conn.execute(
         bookings_sql, (d.year, d.month, d.day))
     booked_slotsArray = []
@@ -350,7 +350,8 @@ def bookings(date):
         bookingObj['time_end'] = (
             booking.service_datetime + timedelta(minutes=booking.duration)).strftime("%H:%M")
         bookingObj['service'] = booking.name
-        bookingObj['client'] = booking.name
+        bookingObj['client'] = booking.firstname + \
+            " " + booking.lastname
         booked_slotsArray.append(bookingObj)
     return jsonify({'bookings': booked_slotsArray})
 

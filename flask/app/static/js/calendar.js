@@ -474,13 +474,15 @@ var main = function(){
 		//var readable_date = weekdays[clickedDate.getDay()]+", "+clickedDate.getDate()+" "+months[clickedDate.getMonth()]+" "+clickedDate.getFullYear();
 		var postgres_date = clickedDate.getFullYear() + "-" + (clickedDate.getMonth()+1) + "-" + clickedDate.getDate();
 		var time =  $("input[name='A']:checked").val();
-		var name = $("input[name='name']").val();
+
+		/*var name = $("input[name='name']").val();
 		var email = $("input[name='email']").val();
-		var phone = $("input[name='phone']").val();
+		var phone = $("input[name='phone']").val();*/
+
 		var service = $('#service-dropdown-title').data("service");
 		var provider = $('#provider-dropdown-title').data("provider");
 
-		var data = {'date': postgres_date, 'time': time, 'name': name, 'email': email, 'phone': phone, 'service': service, 'provider': provider};
+		var data = {'date': postgres_date, 'time': time, 'service': service, 'provider': provider};
 		
 		$.ajax({
 			url: '/appointment',
