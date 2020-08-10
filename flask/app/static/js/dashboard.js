@@ -125,23 +125,64 @@ var main = function(){
 		$(".number").each(function(){
 			//make day active
 			$(this).css("color","black");
+			$(this).css("cursor", "pointer");
 			$(this).on("click", clickHandler);
 			$(this).on("mouseenter", mouseenterHandler);
 			$(this).on("mouseleave", mouseleaveHandler);
 		});
+
+
+		$(".number:nth-child(n)").css("background-color", "transparent");
+
+		if (typeof clickedDate != "undefined") {
+
+			console.log(clickedDate.getMonth(), clickedDate.getFullYear(), d.getFullYear(), d.getMonth(),);
+			if (clickedDate.getMonth() == d.getMonth() && clickedDate.getFullYear() == d.getFullYear()) {
+				
+				console.log("---->This month had a clicked date");
+				/*$(".number:nth-child(n)").each(function(){
+					if ($(this).text() == clickedDate.getDate()){
+
+
+					};
+
+				});*/
+
+
+				var pos = 7+clickedDate.getDate();
+
+				$(".number:nth-child("+pos+")").css("background-color", "lightgray");
+
+
+			}
+			else{
+
+
+
+				console.log("---->This month doesn't have a clicked date");
+				
+				
+				
+
+			}
+
+		}
+		else{
+			//console.log("No day has been clicked");
+			//$(".number:nth-child(n)").css("background-color", "transparent");
+		}
 	};
 
 	
-	var mouseenterHandler = function() {
-    	$(this).css("cursor", "pointer");
+	function mouseenterHandler() {
 		$(this).css("background-color", "#eeeeee");
 	};
 
-	var mouseleaveHandler = function() {
+	function mouseleaveHandler() {
 		$(this).css("background-color", "transparent");
 	};
 
-	var clickHandler = function(){
+	function clickHandler(){
 		var selectedDate = new Date(activeDate.getFullYear(), activeDate.getMonth(), $(this).text());
 			
 		if (typeof(clickedDate) == "undefined" || selectedDate.getDate() != clickedDate.getDate() || selectedDate.getMonth() != clickedDate.getMonth() || selectedDate.getFullYear() != clickedDate.getFullYear()) {
