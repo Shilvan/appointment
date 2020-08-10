@@ -245,8 +245,8 @@ def provider(branch, service):
     return jsonify({'providers': employeesArray})
 
 
-@app.route('/available_slots/<branch>/<service>/<provider>/<date>')
-def slots(branch, service, provider, date):
+@app.route('/available_slots/<branch>/<service>/<provider>/<date>/<time_lower>/<time_upper>')
+def slots(branch, service, provider, date, time_lower, time_upper):
     conn = engine.connect()
 
     # get the position of the provider
@@ -270,12 +270,25 @@ def slots(branch, service, provider, date):
         service_duration_val = service_duration[0]
 
     d = datetime.datetime.strptime(date, '%Y-%m-%d')
-    ending_datetime = datetime.datetime(
-        d.year, d.month, d.day, ending_time_val.hour, ending_time_val.minute)
+    t_lower = datetime.datetime.strptime(time_lower, "%H:%M").time()
+    t_upper = datetime.datetime.strptime(time_upper, "%H:%M").time()
+
+    if t_lower > starting_time_val:
+        new_starting_datetime = datetime.datetime(
+            d.year, d.month, d.day, t_lower.hour, t_lower.minute)
+    else:
+        new_starting_datetime = datetime.datetime(
+            d.year, d.month, d.day, starting_time_val.hour, starting_time_val.minute)
+
+    if t_upper < ending_time_val:
+        ending_datetime = datetime.datetime(
+            d.year, d.month, d.day, t_upper.hour, t_upper.minute)
+    else:
+        ending_datetime = datetime.datetime(
+            d.year, d.month, d.day, ending_time_val.hour, ending_time_val.minute)
+
     new_ending_datetime = ending_datetime - \
         timedelta(minutes=service_duration_val)
-    new_starting_datetime = datetime.datetime(
-        d.year, d.month, d.day, starting_time_val.hour, starting_time_val.minute)
 
     interval_sql = "SELECT slots_interval FROM slots_confs_tbl INNER JOIN branches_tbl ON branches_tbl.slots_conf_id = slots_confs_tbl.id WHERE branches_tbl.id = %s;"
     interval_tupple = conn.execute(interval_sql, (branch))
@@ -344,7 +357,6 @@ def bookings(date):
 
 def search(lower, list, time_lower, duration):
     time_upper = time_lower + timedelta(minutes=duration)
-    print(time_lower)
     globals()['new_datetime'] = time_lower
     upper = len(list) - 1
 

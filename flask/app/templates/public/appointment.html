@@ -12,7 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
 
 </head>
-<body class="bg-blue">
+<body class="">
 
 	<!--<div id="login-section">
 		<div class="login-module  module-background">
@@ -68,7 +68,7 @@
 	</header>
 	<main>
 		<section class="module-background module-size">
-			<div class="section-wrapper">
+			<div class="section-wrapper" style="padding: 15px 0 20px;">
 				<div class="flex-inner-section">
 					<div class="dropdown">
 						<div class="dropdown-label">Select a branch:</div>
@@ -126,7 +126,7 @@
 					<div class="filter-options-wrapper">
 						<ul class="filter-options">
 							<li id="time-filter">
-								<span>Time: </span><input class="time-input" type="text" placeholder="00:00"data-inputmask-regex="([01][0-9]|[2][0-3]):[0-5][0-9]"><span id="time-filter-dash"> - </span><input class="time-input" type="text" placeholder="23:59" data-inputmask-regex="([01][0-9]|[2][0-3]):[0-5][0-9]">
+								<span>Time: </span><input class="time-input" id="time-lower" type="text" placeholder="00:00" data-inputmask-regex="([01][0-9]|[2][0-3]):[0-5][0-9]"><span id="time-filter-dash"> - </span><input class="time-input" id="time-upper" type="text" placeholder="23:59" data-inputmask-regex="([01][0-9]|[2][0-3]):[0-5][0-9]">
 							</li>
 							<li id="days-filter">
 								<div id="days-filter-header" tabindex="0">
@@ -137,35 +137,37 @@
 
 								 <form id="dropdown-list">
 									<label class="label-filter">
-										<input type="checkbox" checked="checked">
+										<input type="checkbox" class="days-checkbox" id="monday" value="1" checked="checked">
 										<span class="custom-checkbox"></span>Monday
 									</label>
 
 									<label class="label-filter">
-										<input type="checkbox" checked="checked">
+										<input type="checkbox" class="days-checkbox" id="tuesday" value="2" checked="checked">
 										<span class="custom-checkbox"></span>Tuesday
 									</label>
 
 									<label class="label-filter">
-										<input type="checkbox" checked="checked"><span class="custom-checkbox"></span>Wednesday
+										<input type="checkbox" class="days-checkbox" id="wednesday" value="3" checked="checked"><span class="custom-checkbox"></span>Wednesday
 									</label>
 
 									<label class="label-filter">
-										<input type="checkbox" checked="checked"><span class="custom-checkbox"></span>Thursday
+										<input type="checkbox" class="days-checkbox" id="thursday" value="4" checked="checked"><span class="custom-checkbox"></span>Thursday
 									</label>
 
 									<label class="label-filter">
-										<input type="checkbox" checked="checked"><span class="custom-checkbox"></span>Friday
+										<input type="checkbox" class="days-checkbox" id="friday" value="5" checked="checked"><span class="custom-checkbox"></span>Friday
 									</label>
 									<label class="label-filter">
-										<input type="checkbox" checked="checked"><span class="custom-checkbox"></span>Saturday
+										<input type="checkbox" class="days-checkbox" id="saturday" value="6" checked="checked"><span class="custom-checkbox"></span>Saturday
 									</label>
-
+									<label class="label-filter">
+										<input type="checkbox" class="days-checkbox" id="sunday" value="7" checked="checked"><span class="custom-checkbox"></span>Sunday
+									</label>
 								</form>
 							</li>
 						</ul>
 						<div id="filter-buttons-container">
-							<div class="button" id="filter-button">CLEAR</div><div class="button" id="filter-button">APPLY</div>
+							<div class="filter-button" id="clearBtn">CLEAR</div><div class="filter-button" id="applyBtn">APPLY</div>
 						</div>
 					</div>
 					<div id="line" style="width:100%; border-bottom:solid thin #d6d4d4; margin-top:2px;"></div>	
@@ -260,7 +262,7 @@
 			</div>	
 		</section>
 
-		<section class="module-background module-size" id="user-data">
+		<!--<section class="module-background module-size" id="user-data">
 			<div class="section-wrapper" >
 				<h2>Enter your details</h2>
 				<div class="forms-wrapper">
@@ -278,7 +280,7 @@
 					</form>
 				</div>				
 			</div>
-		</section>
+		</section>-->
 
 		<section class="module-background module-size">
 			<div id="review-data">

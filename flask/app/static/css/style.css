@@ -132,11 +132,12 @@ section{
 .togglebtn:active{
 	background-color: lightgray;
 }
-#filter-button{
+.filter-button{
 	font-size: 14px;
 	margin:0 5px 3px;
 	font-weight: 100;
 	display: inline-block;
+	cursor: pointer;
 
 }
 
@@ -454,10 +455,6 @@ input[type = checkbox]:not(:checked):hover + .custom-checkbox{
 }
 
 
-
-.day:nth-child(7){
-	color: gray;
-}
 
 
 
