@@ -8,6 +8,7 @@ from datetime import date, timedelta
 import datetime
 import json
 from flask_login import LoginManager, UserMixin, login_user
+import re
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
@@ -21,10 +22,10 @@ def before_request():
     g.user = None
     g.employee = None
     if 'user_id' in session:
-        user = 1  # get by the ID check https://www.youtube.com/watch?v=2Zz97NVbH0U
+        user = session['user_id'][0]  # get by the ID check https://www.youtube.com/watch?v=2Zz97NVbH0U
         g.user = user
     if 'employee_id' in session:
-        employee = 1
+        employee = session['employee_id'][0]
         g.employee = employee
 
 
@@ -99,6 +100,12 @@ def login_public():
     return render_template("public/login-public.html")
 
 
+@app.route("/appointment/logout", methods=["POST", "GET"])
+def logout_public():
+    session.pop('user_id', None)
+    return redirect(url_for('appointment'))
+
+
 @app.route("/appointment", methods=["POST", "GET"])
 def appointment():
     if request.method == 'POST':
@@ -154,32 +161,41 @@ def login_dashboard():
         data_dict = json.loads(data)
         username = data_dict['username']
         password = data_dict['password']
-        """
+
+        emp_id = re.findall("^\d+(?=\.)", username)
+        emp_lastname = re.findall("\w+$", username)
+
+        id_val = None
+        for id in emp_id:
+            id_val = id
+
+        lastname_val = None
+        for lastname in emp_lastname:
+            lastname_val = lastname
+
+        print(username, id_val, lastname_val, password)
+
         conn = engine.connect()
-        login_sql = "SELECT exists (SELECT id FROM customers_tbl WHERE username = %s AND password = %s);"
-        login_tupple = conn.execute(login_sql, (username, password))
+        login_sql = "SELECT exists (SELECT id FROM employees_tbl WHERE id = %s AND lastname = %s AND password = %s);"
+        login_tupple = conn.execute(
+            login_sql, (id_val, lastname_val, password))
 
         for login_result in login_tupple:
-            login_val = login_result[0]"""
-
-        if username == "admin" and password == "admin":
-            login_val = True
-        else:
-            login_val = False
-
-        employee_id = 1  # change this
+            login_val = login_result[0]
 
         resp_dic = {}
 
         if login_val == True:
-            session['employee_id'] = employee_id
+            session['employee_id'] = emp_id
+            resp_dic = {'msg': 'Successful'}
+        elif username == "admin" and password == "admin":
+            session['employee_id'] = 111
             resp_dic = {'msg': 'Successful'}
         else:
             resp_dic = {'msg': 'Error'}
 
         resp = jsonify(resp_dic)
         return resp
-        # return redirect(url_for('work'))
 
     if not g.employee:
         print("----> EMPLOYEE NOT LOGGED IN")
@@ -190,6 +206,12 @@ def login_dashboard():
         return redirect(url_for('dashboard'))
 
     return render_template("admin/login-dashboard.html")
+
+
+@app.route("/dashboard/logout")
+def logout_dashboard():
+    session.pop('employee_id', None)
+    return redirect(url_for('dashboard'))
 
 
 # FETCH FROM JS
@@ -338,11 +360,42 @@ def slots(branch, service, provider, date, time_lower, time_upper):
 def bookings(date):
     conn = engine.connect()
 
+    position_sql = "SELECT position_id FROM employees_tbl WHERE id = %s;"
+    position_tupple = conn.execute(position_sql, (g.employee))
+
+    for position in position_tupple:
+        position_val = position[0]
+
+    print(position_val)
+
     d = datetime.datetime.strptime(date, '%Y-%m-%d')
-    # put the employee ID in there
-    bookings_sql = "SELECT service_datetime, services_tbl.duration, services_tbl.name, customers_tbl.lastname, customers_tbl.firstname FROM bookings_tbl INNER JOIN customers_tbl ON customers_tbl.id = bookings_tbl.customer_id INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id WHERE EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s ORDER BY service_datetime ASC;"
+
+    if position_val == 1:
+        print("ADMIN PERMISSION")
+        bookings_sql = "SELECT service_datetime, services_tbl.duration, services_tbl.name, customers_tbl.lastname, customers_tbl.firstname FROM bookings_tbl INNER JOIN customers_tbl ON customers_tbl.id = bookings_tbl.customer_id INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id WHERE EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s ORDER BY service_datetime ASC;"
+        bookings_tupple = conn.execute(bookings_sql, (d.year, d.month, d.day))
+    elif position_val == 2:
+        print("MANAGER PERMISSION")
+        branch_sql = "SELECT branch_id FROM employees_tbl WHERE id = %s"
+        branch_tupple = conn.execute(branch_sql, (g.employee))
+
+        for branch in branch_tupple:
+            branch_val = branch[0]
+
+        bookings_sql = "SELECT service_datetime, services_tbl.duration, services_tbl.name, customers_tbl.lastname, customers_tbl.firstname FROM bookings_tbl INNER JOIN customers_tbl ON customers_tbl.id = bookings_tbl.customer_id INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id INNER JOIN employees_tbl ON employees_tbl.id = bookings_tbl.employee_id WHERE employees_tbl.branch_id = %s AND EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s ORDER BY service_datetime ASC;"
+        bookings_tupple = conn.execute(
+            bookings_sql, (branch_val, d.year, d.month, d.day))
+
+    elif position_val == 3:
+        print("EMPLOYEE PERMISSION")
+        bookings_sql = "SELECT service_datetime, services_tbl.duration, services_tbl.name, customers_tbl.lastname, customers_tbl.firstname FROM bookings_tbl INNER JOIN customers_tbl ON customers_tbl.id = bookings_tbl.customer_id INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id WHERE EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s AND employee_id = %s ORDER BY service_datetime ASC;"
+        bookings_tupple = conn.execute(
+            bookings_sql, (d.year, d.month, d.day, g.employee))
+
+        # put the employee ID in there
+    """bookings_sql = "SELECT service_datetime, services_tbl.duration, services_tbl.name, customers_tbl.lastname, customers_tbl.firstname FROM bookings_tbl INNER JOIN customers_tbl ON customers_tbl.id = bookings_tbl.customer_id INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id WHERE EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s ORDER BY service_datetime ASC;"
     bookings_tupple = conn.execute(
-        bookings_sql, (d.year, d.month, d.day))
+        bookings_sql, (d.year, d.month, d.day))"""
     booked_slotsArray = []
     for booking in bookings_tupple:
         bookingObj = {}

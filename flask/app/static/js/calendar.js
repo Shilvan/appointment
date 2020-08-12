@@ -276,23 +276,7 @@ var main = function(){
 		//remove if a day is chosen and collapse the available times
 
 
-		/*
-		if(firstDay.getDay()==0){
-			//starts on sunday (grid position 7)
-			$(".number:nth-child(7n+1)").css("color", "red");
-			
-			
-		}
-		else{
-			//start on ??? (grid position first day)
-			//$(".number:nth-child(7n"+firstDay.getDay()+")").css("color", "red");
-			$(".number:nth-child(7n+1)").css("color", "red");
 
-			
-		}*/
-
-
-		//$(".number:nth-child(2n)").css("color", "red");
 		//DATABASE
 		/*
 		$(".number:nth-child(n)").css("background-color", "transparent");

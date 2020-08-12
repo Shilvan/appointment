@@ -8,7 +8,7 @@ var main = function(){
 	$("#register").on("click", function(event){
 		if ($("#register-form").css("display") == "none") {
 			$("#login-public").text("REGISTER");
-			$("#login-form").css("display", "none");
+			$(".login-form").css("display", "none");
 
 			$("#register-form").css("display", "block");
 			$("#confirm-passwd").css("display", "block");
@@ -17,7 +17,7 @@ var main = function(){
 		} 
 		else{
 			$("#login-public").text("LOG IN");
-			$("#login-form").css("display", "block");
+			$(".login-form").css("display", "block");
 
 			$("#register-form").css("display", "none");
 			$("#confirm-passwd").css("display", "none");
@@ -64,7 +64,7 @@ var main = function(){
 	};
 
 
-	$('#login-form').on('keydown', 'input', function (event) {
+	$('#login-form-client').on('keydown', 'input', function (event) {
 	    if (event.which == 13) {
 	    	event.preventDefault();
 		    var $this = $(event.target);
@@ -81,13 +81,13 @@ var main = function(){
 	    }
 	});
 
-	$('#register-form').on('keydown', 'input', function (event) {
+	$('#register-form-client').on('keydown', 'input', function (event) {
 	    if (event.which == 13) {
 	    	event.preventDefault();
 		    var $this = $(event.target);
 		    var index = parseFloat($this.attr('data-index'));
 
-	    	if (index == 6) {
+	    	if (index == 7) {
 	    		login_public();
 
 	    	} else{
@@ -110,7 +110,7 @@ var main = function(){
 
 			var data = {'username': username, 'password': password};
 
-			console.log("sending data to flask");
+			console.log(data);
 
 			$.ajax({
 				url: '/dashboard/login',
@@ -135,6 +135,25 @@ var main = function(){
 
 		}
 	};
+
+	$('#login-form-emp').on('keydown', 'input', function (event) {
+	    if (event.which == 13) {
+	    	event.preventDefault();
+		    var $this = $(event.target);
+		    var index = parseFloat($this.attr('data-index'));
+
+	    	if (index == 2) {
+	    		console.log("Enter sent to login");
+	    		login_dashboard();
+
+
+	    	} else{
+	    		
+		        $('[data-index="' + (index + 1).toString() + '"]').focus();
+	    	}
+	        
+	    }
+	});
 
 
 
