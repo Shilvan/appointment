@@ -108,12 +108,10 @@ var main = function(){
 		var firstDay = new Date(d.getFullYear(), d.getMonth(), 1);
 		jQuery.cssNumber.gridColumnStart = true;
 		if(firstDay.getDay()==0){
-			$(".number:nth-child(8)").css("grid-column-start", 7 );
-				
+			$(".number:nth-child(8)").css("grid-column-start", 7 );	
 		}
 		else{
 			$(".number:nth-child(8)").css("grid-column-start", firstDay.getDay());
-			
 		}
 
 		//SET THE NUMBER OF DAYS IN A MONTH
@@ -138,70 +136,75 @@ var main = function(){
 		
 		unavailableDays(d);
 
-		//check this
-
-		$(".number:nth-child(n)").css("background-color", "transparent");
-
-		if (typeof clickedDate != "undefined") {
-
-			console.log(clickedDate.getMonth(), clickedDate.getFullYear(), d.getFullYear(), d.getMonth(),);
-			if (clickedDate.getMonth() == d.getMonth() && clickedDate.getFullYear() == d.getFullYear()) {
-				
-				console.log("---->This month had a clicked date");
-				/*$(".number:nth-child(n)").each(function(){
-					if ($(this).text() == clickedDate.getDate()){
-
-
-					};
-
-				});*/
-
-
-				var pos = 7+clickedDate.getDate();
-
-				$(".number:nth-child("+pos+")").css("background-color", "lightgray");
-
-
-			}
-			else{
-
-
-
-				console.log("---->This month doesn't have a clicked date");
-				
-				
-				
-
-			}
-
-		}
-		else{
-			//console.log("No day has been clicked");
-			//$(".number:nth-child(n)").css("background-color", "transparent");
-		}
-
-
 	};
 
 	function unavailableDays(d){
-
-		//SET THE FIRST DAY POSITION
-		//$(".number:nth-child(n)").css("color", "black");
-
-		
-		var firstDayDate = new Date(d.getFullYear(), d.getMonth(), 1);
-		var firstDay = firstDayDate.getDay();
-		if (firstDay == 0) { firstDay = 7;};
-
 		$(".number:nth-child(n)").css("color", "lightgray");
 		$(".number:nth-child(n)").css("cursor", "default");
 		$(".number:nth-child(n)").off();
+		//var first_available_day = 1;
 
+		var days = [];
+		$("#dropdown-list > label > input:checked").each(function(){
+			days.push($(this).val());
+		});
+		//console.log(days);
+		
+		//DATABASE
+		$(".number:nth-child(n)").css("background-color", "transparent");
+		var branch = $('#branch-dropdown-title').data("branch");
+		var service = $('#service-dropdown-title').data("service");
+		var provider = $('#provider-dropdown-title').data("provider");
+		var year = d.getFullYear();
+		var month = d.getMonth()+ 1;
+		var time_lower = ($("#time-lower").val() != "") ? $("#time-lower").val() : $("#time-lower").attr("placeholder");
+		var time_upper = ($("#time-upper").val() != "") ? $("#time-upper").val() : $("#time-upper").attr("placeholder");
+
+		
+		fetch('/available_days_in/' + branch + '/' + service + '/' + provider + '/' + year + '/' + month + '/' + days + '/' + time_lower + '/' + time_upper).then(function(response){
+			response.json().then(function(data){
+				//console.log("Fetch available days", data)
+				//first_available_day = data.available_days[0];
+				$(".number").each(function(){
+					if ($.inArray(parseInt($(this).text()), data.available_days) != -1) {
+						//make day active
+						$(this).css("cursor", "pointer");
+						$(this).css("color","black");
+						$(this).on("click", clickHandler);
+						$(this).on("mouseenter", mouseenterHandler);
+						$(this).on("mouseleave", mouseleaveHandler);
+
+						if (typeof(clickedDate) != "undefined" && clickedDate.getDate() == parseInt($(this).text()) && clickedDate.getMonth() == d.getMonth() && clickedDate.getFullYear() == d.getFullYear()) {
+							//there's an elemenent clicked
+							$(this).css("background-color", "lightgray");
+							$(this).off("mouseenter mouseleave");	
+						}	
+
+					} else{
+						//Inactive Days
+						if (typeof(clickedDate) != "undefined" && clickedDate.getDate() == parseInt($(this).text()) && clickedDate.getMonth() == d.getMonth() && clickedDate.getFullYear() == d.getFullYear()) {
+							//there's an elemenent clicked
+							$(".time-wrapper").css("display","none");
+							clickedDate = undefined;
+						}	
+					}
+
+				});
+			});
+		});
+
+		/*
+		var firstDayDate = new Date(d.getFullYear(), d.getMonth(), first_available_day);
+		var firstDay = firstDayDate.getDay();
+		if (firstDay == 0) { firstDay = 7;};
+		
 
 
 		$("#dropdown-list > label > input:checked").each(function(){
-			var chosenDay = $(this).val();
 
+			console.log("apply the day filter")
+
+			var chosenDay = $(this).val();
 			var position;
 			if (chosenDay >= firstDay) {
 				position = chosenDay - firstDay + 1;
@@ -210,102 +213,35 @@ var main = function(){
 				position = 7 - (firstDay - chosenDay -1);
 			}
 
-
-			//$(".number:nth-child(7n+"+ position + ")").css("color", "black");
-
 			$(".number:nth-child(7n+"+ position + ")").each(function(){
 				//$(this).off();
 				//console.log($(this));
 				$(this).css("cursor", "pointer");
-				$(this).css("color","black");
+				$(this).css("color","red");
 				$(this).on("click", clickHandler);
 				$(this).on("mouseenter", mouseenterHandler);
 				$(this).on("mouseleave", mouseleaveHandler);
-
-
 			});
 
+		});*/
 
 
-		});
+		/*
 
 		if (typeof clickedDate != "undefined") {
 
 			var clickedDay = (clickedDate.getDay() ==0) ? 7 : clickedDate.getDay();
 
-
-/*
-			var pos = 7+clickedDate.getDate();
-
-			if ($(".number:nth-child("+pos+")").css("color") != "black") {
-				console.log("The clicked date has been filtered out");
-
-				$(".number:nth-child("+pos+")").css("background-color", "transparent");
-				
-			};*/
-
-
-
 			$("#dropdown-list > label > input:not(:checked)").each(function(){
-			
 				if (clickedDay == $(this).val()) {
-
 					console.log("The clicked date has been filtered out");
 					$(".number:nth-child(n)").css("background-color", "transparent");
-
 					clickedDate = undefined;
-
 					$(".time-wrapper").css("display","none");
-
-					//remove times
-
 				}
-
 			});
-
-
-
-
-		};
-
+		};*/
 		
-
-
-
-
-		//remove if a day is chosen and collapse the available times
-
-
-
-		//DATABASE
-		/*
-		$(".number:nth-child(n)").css("background-color", "transparent");
-		var year = d.getFullYear();
-		var month = d.getMonth()+ 1;
-		fetch('/available_days_in/' + year + '/' + month).then(function(response){
-			response.json().then(function(data){
-				$(".number").each(function(){
-					if ($.inArray(parseInt($(this).text()), data.available_days) != -1) {
-						//make day active
-						$(this).css("color","black");
-						$(this).on("click", clickHandler);
-						$(this).on("mouseenter", mouseenterHandler);
-						$(this).on("mouseleave", mouseleaveHandler);
-
-						if (typeof(clickedDate) != "undefined" && clickedDate.getDate() == parseInt($(this).text()) && clickedDate.getMonth() == d.getMonth() && clickedDate.getFullYear() == d.getFullYear()) {
-							//there's an elemenent clicked in this month
-							$(this).css("background-color", "lightgray");
-							$(this).off("mouseenter mouseleave");	
-						}	
-					} 
-					else{
-						//make day inactive
-						$(this).css("color","lightgray");
-						$(this).off("click mouseenter mouseleave");
-					}
-				});
-			});
-		});*/
 
 	};
 	

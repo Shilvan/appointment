@@ -9,6 +9,7 @@ import datetime
 import json
 from flask_login import LoginManager, UserMixin, login_user
 import re
+import calendar
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
@@ -22,7 +23,8 @@ def before_request():
     g.user = None
     g.employee = None
     if 'user_id' in session:
-        user = session['user_id'][0]  # get by the ID check https://www.youtube.com/watch?v=2Zz97NVbH0U
+        # get by the ID check https://www.youtube.com/watch?v=2Zz97NVbH0U
+        user = 1
         g.user = user
     if 'employee_id' in session:
         employee = session['employee_id'][0]
@@ -409,6 +411,93 @@ def bookings(date):
     return jsonify({'bookings': booked_slotsArray})
 
 
+@app.route('/available_days_in/<branch>/<service>/<provider>/<year>/<month>/<days>/<time_lower>/<time_upper>')
+def day(branch, service, provider, year, month, days, time_lower, time_upper):
+    days = days.split(',')
+    # print(days)
+    conn = engine.connect()
+
+    # get the position of the provider
+    employee_position_sql = "SELECT position_id FROM employees_tbl WHERE id = %s;"
+    position_tupple = conn.execute(employee_position_sql, (provider))
+    for position_id in position_tupple:
+        position_id_val = position_id[0]
+
+    # get the times of the provider
+    starting_time_sql = "SELECT starting_time, ending_time FROM shifts_tbl INNER JOIN positions_shifts_link_tbl ON positions_shifts_link_tbl.shift_id = shifts_tbl.id WHERE positions_shifts_link_tbl.position_id = %s;"
+    starting_time_tupple = conn.execute(starting_time_sql, (position_id_val))
+    for time in starting_time_tupple:
+        starting_time_val = time[0]
+        ending_time_val = time[1]
+        # check when there are multiple starting time, choose the one with higher hierarchy
+
+    # service duration
+    service_duration_sql = "SELECT duration FROM services_tbl WHERE id = %s;"
+    service_duration_tupple = conn.execute(service_duration_sql, (service))
+    for service_duration in service_duration_tupple:
+        service_duration_val = service_duration[0]
+
+    filter_lower = datetime.datetime.strptime(time_lower, "%H:%M").time()
+    filter_upper = datetime.datetime.strptime(time_upper, "%H:%M").time()
+
+    t_lower = filter_lower if filter_lower > starting_time_val else starting_time_val
+    t_upper = filter_upper if filter_upper < ending_time_val else ending_time_val
+
+    daysArray = []
+
+    """for day in days:
+        daysArray.append(day.date_part)"""
+    today = datetime.datetime.today()
+    first_day = 1 if int(month) != today.month else today.day
+    last_day = calendar.monthrange(int(year), int(month))[1] + 1
+
+    for day in range(first_day, last_day):
+        dayoftheweek = str(datetime.datetime(
+            int(year), int(month), day).weekday())
+
+        if dayoftheweek in days:
+            new_starting_datetime = datetime.datetime(
+                int(year), int(month), day, t_lower.hour, t_lower.minute)
+            ending_datetime = datetime.datetime(
+                int(year), int(month), day, t_upper.hour, t_upper.minute)
+            new_ending_datetime = ending_datetime - \
+                timedelta(minutes=service_duration_val)
+
+            # GET BOOKED SLOTS
+            bookings_sql = "SELECT service_datetime, services_tbl.duration FROM bookings_tbl INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id WHERE EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s AND employee_id = %s ORDER BY service_datetime ASC;"
+            bookings_tupple = conn.execute(
+                bookings_sql, (year, month, day, provider))
+            booked_slotsArray = []
+            for booking in bookings_tupple:
+                slot = []
+                slot.append(booking.service_datetime)
+                slot.append(booking.service_datetime +
+                            timedelta(minutes=booking.duration))
+                booked_slotsArray.append(slot)
+
+            globals()['lower'] = 0
+            globals()['new_datetime'] = new_starting_datetime
+
+            if new_starting_datetime <= new_ending_datetime:
+                if search(lower, booked_slotsArray, new_starting_datetime, service_duration_val) and new_datetime <= new_ending_datetime:
+                    #print("There's at least one available slot")
+                    new_starting_datetime = new_datetime
+                    print("- ", day, ", Available slot at:  ",
+                          new_starting_datetime.strftime("%H:%M"))
+
+                    """if interval_val <= service_duration_val:
+                        new_starting_datetime += timedelta(minutes=interval_val)
+                    else:
+                        new_starting_datetime += timedelta(
+                            minutes=service_duration_val)"""
+
+                    daysArray.append(day)
+
+    print(daysArray)
+
+    return jsonify({'available_days': daysArray})
+
+
 def search(lower, list, time_lower, duration):
     time_upper = time_lower + timedelta(minutes=duration)
     globals()['new_datetime'] = time_lower
@@ -456,7 +545,6 @@ def search(lower, list, time_lower, duration):
 
 # AVAILABLE SLOTS
 
-
 """
 Function (date):
     *First check if the date is available
@@ -480,23 +568,7 @@ Function (date):
                 -make the slot available
                 -Continue (next available slot 15 or 30 min)
 """
-
-
-# check this
-@app.route('/available_days_in/<year>/<month>')
-def day(year, month):
-    conn = engine.connect()
-    sql = "SELECT EXTRACT(DAY FROM day) FROM dates WHERE EXTRACT(YEAR FROM day) = %s AND EXTRACT(MONTH FROM day) = %s;"
-    days = conn.execute(sql, (year, month))
-
-    daysArray = []
-
-    for day in days:
-        daysArray.append(day.date_part)
-
-    return jsonify({'available_days': daysArray})
-
-
+"""
 @app.route('/available_times_in/<year>/<month>/<day>')
 def time(year, month, day):
     conn = engine.connect()
@@ -510,7 +582,7 @@ def time(year, month, day):
         timesArray.append(time.unnest)
 
     return jsonify({'available_times': timesArray})
-
+"""
 
 
 # AVAILABLE DAYS
