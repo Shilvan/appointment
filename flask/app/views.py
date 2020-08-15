@@ -24,10 +24,10 @@ def before_request():
     g.employee = None
     if 'user_id' in session:
         # get by the ID check https://www.youtube.com/watch?v=2Zz97NVbH0U
-        user = 1
+        user = session['user_id']
         g.user = user
     if 'employee_id' in session:
-        employee = session['employee_id'][0]
+        employee = session['employee_id']
         g.employee = employee
 
 
@@ -167,9 +167,10 @@ def login_dashboard():
         emp_id = re.findall("^\d+(?=\.)", username)
         emp_lastname = re.findall("\w+$", username)
 
-        id_val = None
+        id_val = emp_id[0]
+        """
         for id in emp_id:
-            id_val = id
+            id_val = id"""
 
         lastname_val = None
         for lastname in emp_lastname:
@@ -188,10 +189,7 @@ def login_dashboard():
         resp_dic = {}
 
         if login_val == True:
-            session['employee_id'] = emp_id
-            resp_dic = {'msg': 'Successful'}
-        elif username == "admin" and password == "admin":
-            session['employee_id'] = 111
+            session['employee_id'] = int(id_val)
             resp_dic = {'msg': 'Successful'}
         else:
             resp_dic = {'msg': 'Error'}
