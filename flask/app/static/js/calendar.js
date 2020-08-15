@@ -169,6 +169,9 @@ var main = function(){
 		$("#dropdown-list > label > input:checked").each(function(){
 			days.push($(this).val());
 		});
+
+
+		
 		//console.log(days);
 		
 		//DATABASE
@@ -408,33 +411,57 @@ var main = function(){
 	});
 
 	/*FOOTER BUTTONS*/
+
+
+
 	$("#confirmbtn").on("click", function(event){
 		/*send data to python*/
-		console.log("save data to the database");
 
-		//var readable_date = weekdays[clickedDate.getDay()]+", "+clickedDate.getDate()+" "+months[clickedDate.getMonth()]+" "+clickedDate.getFullYear();
-		var postgres_date = clickedDate.getFullYear() + "-" + (clickedDate.getMonth()+1) + "-" + clickedDate.getDate();
+
+		
 		var time =  $("input[name='A']:checked").val();
-
-		/*var name = $("input[name='name']").val();
-		var email = $("input[name='email']").val();
-		var phone = $("input[name='phone']").val();*/
-
 		var service = $('#service-dropdown-title').data("service");
 		var provider = $('#provider-dropdown-title').data("provider");
 
-		var data = {'date': postgres_date, 'time': time, 'service': service, 'provider': provider};
+
+		if (time == null || service == "" || provider == "" || typeof clickedDate == "undefined") {
+			//an error has occured
+			if (service == "" || provider == "") {
+				alert("Set the branch information");
+			} else if (typeof clickedDate == "undefined") {
+				alert("No day has been chosen");
+			} else if (time == null) {
+				alert("No time has been chosen");
+			}
+			else{
+				alert("Error");
+			}
+
+		} else{
+
+
+			console.log("save data to the database");
+
+
+			var postgres_date = clickedDate.getFullYear() + "-" + (clickedDate.getMonth()+1) + "-" + clickedDate.getDate();
+			var data = {'date': postgres_date, 'time': time, 'service': service, 'provider': provider};
+			
+			$.ajax({
+				url: '/appointment',
+				type: 'POST',
+				data: JSON.stringify(data),
+				dataType: 'json'
+			}).done(function(data){
+				$("header").css("display", "none");
+				$("main").css("display", "none");
+				$(".confirmed-view").css("display", "grid");
+			});
+
+		}
+
+		//var readable_date = weekdays[clickedDate.getDay()]+", "+clickedDate.getDate()+" "+months[clickedDate.getMonth()]+" "+clickedDate.getFullYear();
 		
-		$.ajax({
-			url: '/appointment',
-			type: 'POST',
-			data: JSON.stringify(data),
-			dataType: 'json'
-		}).done(function(data){
-			$("header").css("display", "none");
-			$("main").css("display", "none");
-			$(".confirmed-view").css("display", "grid");
-		});
+		
 	
 		/*display confirmed page
 		$("header").css("display", "none");
@@ -502,22 +529,32 @@ var main = function(){
 	/*FILTERS*/
 	$("#applyBtn").on("click", function(event){
 
-		
-
 		var time_lower = ($("#time-lower").val() != "") ? $("#time-lower").val() : $("#time-lower").attr("placeholder");
 		var time_upper = ($("#time-upper").val() != "") ? $("#time-upper").val() : $("#time-upper").attr("placeholder");
+		var t_lower = new Date('July 1, 1999 ' + time_lower);
+		var t_upper = new Date('July 1, 1999 ' + time_upper);
 
+		var time =  $("input[name='A']:checked").val();
+		var service = $('#service-dropdown-title').data("service");
+		var provider = $('#provider-dropdown-title').data("provider");
 
-		unavailableDays(activeDate);
+		if (service == "" || provider == "" || $("#dropdown-list > label > input:checked").length == 0 || t_lower > t_upper) {
+			if (service == "" || provider == ""){
+				alert("Set the branch information");
+			} else if ($("#dropdown-list > label > input:checked").length == 0) {
+			alert("No days of the week has been chosen to be filtered");
+			} else if(t_lower > t_upper){
+				alert("Time filter reversed error")
 
+			}
+		} else{
+			unavailableDays(activeDate);
 
+			if (typeof clickedDate != "undefined") {
+				populateTimes(clickedDate);
+			}
 
-		if (typeof clickedDate != "undefined") {
-			populateTimes(clickedDate);
 		}
-
-
-
 		
 	});
 
@@ -526,13 +563,29 @@ var main = function(){
 		$(".days-checkbox").prop("checked", true);
 		$(".time-input").val("");
 
-		unavailableDays(activeDate);
+		var time =  $("input[name='A']:checked").val();
+		var service = $('#service-dropdown-title').data("service");
+		var provider = $('#provider-dropdown-title').data("provider");
 
-		if (typeof clickedDate != "undefined") {
-			populateTimes(clickedDate);
+		if (service == "" || provider == "") {
+			alert("Set the branch information");
+		} else{
+			unavailableDays(activeDate);
+
+			if (typeof clickedDate != "undefined") {
+				populateTimes(clickedDate);
+			}
+
 		}
 
+
+		
+
 	});
+
+
+
+
 
 };
 
