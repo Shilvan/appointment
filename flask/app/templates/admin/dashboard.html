@@ -7,9 +7,9 @@
 
 	<!--<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />-->
 
-	<link rel="stylesheet" type="text/css" href="static/css/reset.css">
-	<link rel="stylesheet" type="text/css" href="static/css/style.css">
-	<link rel="stylesheet" type="text/css" href="static/css/dash.css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dash.css') }}">
 </head>
 <body class="bg-blue">
 
@@ -20,10 +20,10 @@
 		</svg>
 		<a class="navbar-logo" style="font-size:40px; color: dimgray;">BRAND</a>
 		<ul class="navbar-list dark-links">
-			<li class="active"><a>Bookings</a></li>
-			<li ><a>Manage</a></li>
-			<li><a>Settings</a></li>
-			<li><a>Help</a></li>
+			<li class="active"><a href="{{ url_for('dashboard') }}">Bookings</a></li>
+			<li><a href="{{ url_for('manage') }}">Manage</a></li>
+			<li><a href="{{ url_for('settings') }}">Settings</a></li>
+			<li><a href="{{ url_for('help') }}">Help</a></li>
 		</ul>
 	</nav>
 
@@ -34,10 +34,10 @@
 		</svg>
 		<a class="navbar-logo" style="font-size:40px; color: lightgray;">BRAND</a>
 		<ul class="navbar-list dark-links">
-			<li class="active"><a class="nav-link">Bookings</a></li>
-			<li ><a>Manage</a></li>
-			<li><a>Settings</a></li>
-			<li><a>Help</a></li>
+			<li class="active"><a href="{{ url_for('dashboard') }}">Bookings</a></li>
+			<li><a href="{{ url_for('manage') }}">Manage</a></li>
+			<li><a href="{{ url_for('settings') }}">Settings</a></li>
+			<li><a href="{{ url_for('help') }}">Help</a></li>
 		</ul>
 	</nav>
 

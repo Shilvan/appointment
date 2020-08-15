@@ -216,6 +216,21 @@ def logout_dashboard():
     return redirect(url_for('dashboard'))
 
 
+@app.route("/dashboard/manage")
+def manage():
+    return render_template("admin/manage.html")
+
+
+@app.route("/dashboard/settings")
+def settings():
+    return render_template("admin/settings.html")
+
+
+@app.route("/dashboard/help")
+def help():
+    return render_template("admin/help.html")
+
+
 # FETCH FROM JS
 @app.route('/get_branches')
 def branch():

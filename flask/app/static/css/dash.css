@@ -126,6 +126,7 @@ nav{
 	font-size: 20px;
 	cursor: pointer;
 	transition:  300ms;
+	text-decoration: none;
 }
 
 .navbar-list a::after{
