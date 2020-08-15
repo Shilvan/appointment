@@ -8,11 +8,12 @@ var main = function(){
 	var weekdays=["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	var months = ["Jan","Feb", "Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" ];
 	
-	var clickedDate;
 
 	var today = new Date();
 	var activeDate = new Date();
 	var dayInTheMonth = new Date(activeDate.getFullYear(), activeDate.getMonth() + 1, 0).getDate();
+
+	var clickedDate = today;
 	//if the last day is on a sunday put it on monday of the next month (next=>if the days left are disabled too)
 	if (activeDate.getDay()==0 && dayInTheMonth == activeDate.getDate()){ //-CHANGE- (active date get date)
 		activeDate.setMonth(activeDate.getMonth()+1);
@@ -90,87 +91,42 @@ var main = function(){
 		}
 
 
-
-
 		//DATABASE
-		/*
+		$(".number:nth-child(n)").css("color", "lightgray");
+		$(".number:nth-child(n)").css("cursor", "default");
+		$(".number:nth-child(n)").off();
+		
 		$(".number:nth-child(n)").css("background-color", "transparent");
-		var year = d.getFullYear();
-		var month = d.getMonth()+ 1;
-		fetch('/available_days_in/' + year + '/' + month).then(function(response){
-			response.json().then(function(data){
-				$(".number").each(function(){
-					if ($.inArray(parseInt($(this).text()), data.available_days) != -1) {
-						//make day active
-						$(this).css("color","black");
-						$(this).on("click", clickHandler);
-						$(this).on("mouseenter", mouseenterHandler);
-						$(this).on("mouseleave", mouseleaveHandler);
-
-						if (typeof(clickedDate) != "undefined" && clickedDate.getDate() == parseInt($(this).text()) && clickedDate.getMonth() == d.getMonth() && clickedDate.getFullYear() == d.getFullYear()) {
-							//there's an elemenent clicked in this month
-							$(this).css("background-color", "lightgray");
-							$(this).off("mouseenter mouseleave");	
-						}	
-					} 
-					else{
-						//make day inactive
-						$(this).css("color","lightgray");
-						$(this).off("click mouseenter mouseleave");
-					}
-				});
-			});
-		});*/
-
+		
 		$(".number").each(function(){
-			//make day active
-			$(this).css("color","black");
-			$(this).css("cursor", "pointer");
-			$(this).on("click", clickHandler);
-			$(this).on("mouseenter", mouseenterHandler);
-			$(this).on("mouseleave", mouseleaveHandler);
+
+			if (today.getMonth() == d.getMonth() && today.getFullYear() == d.getFullYear() && parseInt($(this).text()) >= today.getDate() || today.getMonth() < d.getMonth() ) {
+				//make day active
+				$(this).css("cursor", "pointer");
+				$(this).css("color","black");
+				$(this).on("click", clickHandler);
+				$(this).on("mouseenter", mouseenterHandler);
+				$(this).on("mouseleave", mouseleaveHandler);
+
+				if (typeof(clickedDate) != "undefined" && clickedDate.getDate() == parseInt($(this).text()) && clickedDate.getMonth() == d.getMonth() && clickedDate.getFullYear() == d.getFullYear()) {
+					//there's an elemenent clicked
+					$(this).css("background-color", "lightgray");
+					$(this).off("mouseenter mouseleave");	
+				}
+			} else{
+				//Inactive Days
+				if (typeof(clickedDate) != "undefined" && clickedDate.getDate() == parseInt($(this).text()) && clickedDate.getMonth() == d.getMonth() && clickedDate.getFullYear() == d.getFullYear()) {
+					//there's an elemenent clicked
+					$(".time-wrapper").css("display","none");
+					clickedDate = undefined;
+				}	
+			}
+
 		});
 
 
-		$(".number:nth-child(n)").css("background-color", "transparent");
+		
 
-		if (typeof clickedDate != "undefined") {
-
-			console.log(clickedDate.getMonth(), clickedDate.getFullYear(), d.getFullYear(), d.getMonth(),);
-			if (clickedDate.getMonth() == d.getMonth() && clickedDate.getFullYear() == d.getFullYear()) {
-				
-				console.log("---->This month had a clicked date");
-				/*$(".number:nth-child(n)").each(function(){
-					if ($(this).text() == clickedDate.getDate()){
-
-
-					};
-
-				});*/
-
-
-				var pos = 7+clickedDate.getDate();
-
-				$(".number:nth-child("+pos+")").css("background-color", "lightgray");
-
-
-			}
-			else{
-
-
-
-				console.log("---->This month doesn't have a clicked date");
-				
-				
-				
-
-			}
-
-		}
-		else{
-			//console.log("No day has been clicked");
-			//$(".number:nth-child(n)").css("background-color", "transparent");
-		}
 	};
 
 	
