@@ -40,6 +40,12 @@ var main = function(){
 	$("#branch-dropdown").on("click", "li", function(event){
 		$('#branch-dropdown-title').text($(this).text());
 		$('#branch-dropdown-title').data("branch", $(this).val());
+
+		/**/
+		$('#service-dropdown-title').text("Service...");
+		$('#provider-dropdown-title').text("Provider...");
+		$('#provider-dropdown').empty();
+
 		setServices($(this).val());
 	});
 
@@ -62,6 +68,9 @@ var main = function(){
 		$('#service-dropdown-title').text($(this).text());
 		$('#service-dropdown-title').data("service", $(this).val());
 
+		
+
+
 		var branch = $('#branch-dropdown-title').data("branch");
 		setProviders(branch, $(this).val());
 		/*remove the rest of drowpdowns preselected*/
@@ -76,12 +85,24 @@ var main = function(){
 				$("#provider-dropdown").empty();
 				
 				if (data.providers.length > 1) {
-					$("#provider-dropdown").append('<li>Any</li>');
+					//$("#provider-dropdown").append('<li>Any</li>');
 				}
 				
 
+				var provider_existed = false;
 				for(let provider of data.providers){
 					$("#provider-dropdown").append('<li value="'+ provider.id +'">'+ provider.name + '</li>');
+
+					if(provider.name == $('#provider-dropdown-title').text()){
+						provider_existed = true;
+					}
+				}
+
+
+				if (provider_existed == false) {
+					/**/
+					$('#provider-dropdown-title').text("Provider...");
+
 				}
 
 			});
@@ -481,6 +502,8 @@ var main = function(){
 	/*FILTERS*/
 	$("#applyBtn").on("click", function(event){
 
+		
+
 		var time_lower = ($("#time-lower").val() != "") ? $("#time-lower").val() : $("#time-lower").attr("placeholder");
 		var time_upper = ($("#time-upper").val() != "") ? $("#time-upper").val() : $("#time-upper").attr("placeholder");
 
@@ -492,6 +515,8 @@ var main = function(){
 		if (typeof clickedDate != "undefined") {
 			populateTimes(clickedDate);
 		}
+
+
 
 		
 	});
