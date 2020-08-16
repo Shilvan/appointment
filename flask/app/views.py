@@ -78,11 +78,14 @@ def login_public():
         for login_result in login_tupple:
             login_val = login_result[0]
 
-        user_id = 1  # change this
-
         resp_dic = {}
 
         if login_val == True:
+            customer_sql = "SELECT id FROM customers_tbl WHERE username = %s;"
+            customer_tupple = conn.execute(customer_sql, (username))
+            for customer in customer_tupple:
+                user_id = customer[0]
+
             session['user_id'] = user_id
             resp_dic = {'msg': 'Successful'}
         else:
@@ -106,6 +109,31 @@ def login_public():
 def logout_public():
     session.pop('user_id', None)
     return redirect(url_for('appointment'))
+
+
+@app.route("/appointment/register", methods=["POST"])
+def register_public():
+    rf = request.form
+    for key in rf.keys():
+        data = key
+    data_dict = json.loads(data)
+
+    conn = engine.connect()
+    register_sql = "INSERT INTO customers_tbl (firstname, lastname, username, password, email, phone) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;"
+    register_tupple = conn.execute(register_sql, (data_dict['firstname'], data_dict['lastname'],
+                                                  data_dict['username'], data_dict['password'], data_dict['email'], data_dict['phone']))
+
+    for register_id in register_tupple:
+        user_id = register_id[0]
+
+    resp_dic = {}
+
+    session['user_id'] = user_id
+    resp_dic = {'msg': 'Successful'}
+
+    resp = jsonify(resp_dic)
+    return resp
+    # return redirect(url_for('work'))
 
 
 @app.route("/appointment", methods=["POST", "GET"])

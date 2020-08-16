@@ -60,6 +60,58 @@ var main = function(){
 		} else if ($("#login-public").text() == "REGISTER") {
 			console.log("register");
 
+			var empty_field = false;
+
+
+			console.log($("form#register-form :input"));
+			$("form#register-form :input").each(function(){
+				console.log($(this).val());
+				if ($(this).val() == "") {
+					empty_field = true;
+				}
+
+			});
+
+			console.log(empty_field);
+
+			if (empty_field || $("input[name='new-password']").val() != $("input[name='confirm-password']").val()) {
+				if (empty_field) {
+					alert("Complete all the fields");
+				}
+				else{
+					alert("Passwords don't match");
+				}
+			}
+			else{
+				var firstname =  $("input[name='fname']").val();
+				var lastname =  $("input[name='lname']").val();
+				var email =  $("input[name='email']").val();
+				var phone =  $("input[name='phone']").val();
+
+				var username =  $("input[name='new-username']").val();
+				var password = $("input[name='new-password']").val();
+
+				var data = {'firstname': firstname, 'lastname': lastname, 'username': username, 'password': password, 'email': email, 'phone': phone};
+
+				$.ajax({
+					url: '/appointment/register',
+					type: 'POST',
+					data: JSON.stringify(data),
+					dataType: 'json'
+				}).done(function(data){
+
+					if (data.msg == "Successful") {
+						location.replace('/appointment');
+					}else{
+						alert("Error");
+					}
+					
+				});
+			}
+
+			
+			
+
 		}
 	};
 
@@ -81,7 +133,7 @@ var main = function(){
 	    }
 	});
 
-	$('#register-form-client').on('keydown', 'input', function (event) {
+	$('#register-form').on('keydown', 'input', function (event) {
 	    if (event.which == 13) {
 	    	event.preventDefault();
 		    var $this = $(event.target);
