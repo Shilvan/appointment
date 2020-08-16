@@ -10,6 +10,7 @@ import json
 from flask_login import LoginManager, UserMixin, login_user
 import re
 import calendar
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
@@ -72,11 +73,14 @@ def login_public():
         password = data_dict['password']
 
         conn = engine.connect()
-        login_sql = "SELECT exists (SELECT id FROM customers_tbl WHERE username = %s AND password = %s);"
-        login_tupple = conn.execute(login_sql, (username, password))
+        password_sql = "SELECT password FROM customers_tbl WHERE username = %s;"
+        password_tupple = conn.execute(password_sql, (username))
 
-        for login_result in login_tupple:
-            login_val = login_result[0]
+        hashed_password = None
+        for password_result in password_tupple:
+            hashed_password = password_result[0]
+
+        login_val = check_password_hash(hashed_password, password)
 
         resp_dic = {}
 
@@ -118,10 +122,13 @@ def register_public():
         data = key
     data_dict = json.loads(data)
 
+    hashed_password = generate_password_hash(
+        data_dict['password'], method='sha256')
+
     conn = engine.connect()
     register_sql = "INSERT INTO customers_tbl (firstname, lastname, username, password, email, phone) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;"
     register_tupple = conn.execute(register_sql, (data_dict['firstname'], data_dict['lastname'],
-                                                  data_dict['username'], data_dict['password'], data_dict['email'], data_dict['phone']))
+                                                  data_dict['username'], hashed_password, data_dict['email'], data_dict['phone']))
 
     for register_id in register_tupple:
         user_id = register_id[0]
