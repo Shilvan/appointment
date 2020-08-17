@@ -69,7 +69,7 @@ def login_public():
         for key in rf.keys():
             data = key
         data_dict = json.loads(data)
-        username = data_dict['username']
+        username = data_dict['username'].lower()
         password = data_dict['password']
 
         conn = engine.connect()
@@ -128,7 +128,7 @@ def register_public():
     conn = engine.connect()
     register_sql = "INSERT INTO customers_tbl (firstname, lastname, username, password, email, phone) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;"
     register_tupple = conn.execute(register_sql, (data_dict['firstname'], data_dict['lastname'],
-                                                  data_dict['username'], hashed_password, data_dict['email'], data_dict['phone']))
+                                                  data_dict['username'].lower(), hashed_password, data_dict['email'], data_dict['phone']))
 
     for register_id in register_tupple:
         user_id = register_id[0]
@@ -196,7 +196,7 @@ def login_dashboard():
         for key in rf.keys():
             data = key
         data_dict = json.loads(data)
-        username = data_dict['username']
+        username = data_dict['username'].lower()
         password = data_dict['password']
 
         emp_id = re.findall("^\d+(?=\.)", username)
