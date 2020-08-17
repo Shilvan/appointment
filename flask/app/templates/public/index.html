@@ -7,9 +7,10 @@
 
   <!--<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />-->
 
-  <link rel="stylesheet" type="text/css" href="static/css/reset.css">
-  <link rel="stylesheet" type="text/css" href="static/css/style.css">
-  <link rel="stylesheet" type="text/css" href="static/css/portfolio.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/portfolio.css') }}">
+
 </head>
 
 <body>
@@ -58,6 +59,6 @@
   <script src="{{ url_for('static', filename='js/inputmask/dist/bindings/inputmask.binding.js') }}"></script>
 
   <!--<script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script> custom bar-->
-  <script src="static/js/calendar.js"></script>
+  <!--<script src="static/js/calendar.js"></script>-->
 </body>
 </html>
