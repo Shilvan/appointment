@@ -33,13 +33,13 @@ nav{
 .nav-style-2{
     top: 2.5%;
     left: 10%;
-    background-color: hsla(227, 100%, 98%, 0.8);
+    background-color: hsla(227, 100%, 98%, 1);
     color: #060606;
     display: block;
     text-align: center;
     width: 80%;
     border-radius: 3px;
-    backdrop-filter: blur(8px);
+    /*backdrop-filter: blur(8px);*/
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 }
