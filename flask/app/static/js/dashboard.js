@@ -42,7 +42,7 @@ var main = function(){
 			response.json().then(function(data){
 				$(".time-list").empty();
 				for(let booking of data.bookings){
-					$(".time-list").append('<li><span class="dot">&middot;</span><div><div class="time-list-time">' + booking.time_start +' - '+ booking.time_end + '</div> <div class="time-list-description">'+ booking.service + ' <span>&middot; </span>' + booking.client + '</div></div><a class="general-btn details-btn">Details ></a></li>');
+					$(".time-list").append('<li><span class="dot">&middot;</span><div><div class="time-list-time">' + booking.time_start +' - '+ booking.time_end + '</div> <div class="time-list-description">'+ booking.service + ' <span>&middot; </span>' + booking.client + '</div></div><a class="general-btn" id="detailsbtn">Details ></a></li>');
 				}
 
 				$("#bookings-text").text(weekdays[d.getDay()] + ", " + d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear());
@@ -191,6 +191,24 @@ var main = function(){
 		$('.mobile-nav').css("display", "none");
 		$('html').css("overflow", "auto");
 	});
+
+	/*BTNS*/
+	$("#addbtn").on("click", function(event){
+		alert("Adding bookings from dashboard is not functional yet");
+
+	});
+
+	$("#bookingsbtn").on("click", function(event){
+		alert("Displaying all the bookings is not functional yet");
+
+	});
+
+	$(".time-list").on("click", "a#detailsbtn", function(event){
+		alert("Managing the bookings is not functional yet");
+
+	});
+
+
 };
 
 $(document).ready(main);
