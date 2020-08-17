@@ -742,7 +742,7 @@ h3{
 
 	background-color: white;
 	margin: 30px auto;
-	width: 80%;
+	width: 80vw;
 	max-width: 1000px;
 	height: max-content;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -755,7 +755,7 @@ h3{
 /*MEDIA QUERIES*/
 @media screen and  (max-width: 1000px) {
 
-	section, .info-footer, .btn-wrapper{
+	section, .btn-wrapper{
 		width: 95%;
 	}
 
@@ -792,7 +792,7 @@ h3{
 
 @media screen and  (max-width: 360px) {
 	
-   section, .info-footer, .btn-wrapper{
+   section, .btn-wrapper{
 		width: 95%;
 	}
 
