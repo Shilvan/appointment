@@ -105,6 +105,7 @@ var main = function(){
 
 				}
 				else{
+					setNewMonth(activeDate);
 					if (typeof clickedDate != "undefined") {
 						populateTimes(clickedDate);
 
@@ -190,6 +191,7 @@ var main = function(){
 		var branch = $('#branch-dropdown-title').data("branch");
 		var service = $('#service-dropdown-title').data("service");
 		var provider = $('#provider-dropdown-title').data("provider");
+		console.log("Service ID:", service);
 		var year = d.getFullYear();
 		var month = d.getMonth()+ 1;
 		var time_lower = ($("#time-lower").val() != "") ? $("#time-lower").val() : $("#time-lower").attr("placeholder");
