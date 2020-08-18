@@ -150,7 +150,7 @@ def appointment():
         for key in rf.keys():
             data = key
         data_dict = json.loads(data)
-        print(data_dict)
+        # print(data_dict)
 
         d = datetime.datetime.strptime(data_dict['date'], '%Y-%m-%d')
         t = datetime.datetime.strptime(data_dict['time'], '%H:%M')
@@ -211,7 +211,7 @@ def login_dashboard():
         for lastname in emp_lastname:
             lastname_val = lastname
 
-        print(username, id_val, lastname_val, password)
+        #print(username, id_val, lastname_val, password)
 
         conn = engine.connect()
         login_sql = "SELECT exists (SELECT id FROM employees_tbl WHERE id = %s AND lastname = %s AND password = %s);"
@@ -335,11 +335,16 @@ def slots(branch, service, provider, date, time_lower, time_upper):
         ending_time_val = time[1]
         # check when there are multiple starting time, choose the one with higher hierarchy
 
+    print("----------- QUERY INFO ----------")
+    print("- Service ID:", service)
     # service duration
     service_duration_sql = "SELECT duration FROM services_tbl WHERE id = %s;"
     service_duration_tupple = conn.execute(service_duration_sql, (service))
     for service_duration in service_duration_tupple:
         service_duration_val = service_duration[0]
+        print(service_duration)
+
+    print("- Service Duration:", service_duration_val)
 
     d = datetime.datetime.strptime(date, '%Y-%m-%d')
     t_lower = datetime.datetime.strptime(time_lower, "%H:%M").time()
@@ -388,8 +393,8 @@ def slots(branch, service, provider, date, time_lower, time_upper):
         if search(lower, booked_slotsArray, new_starting_datetime, service_duration_val) and new_datetime <= new_ending_datetime:
 
             new_starting_datetime = new_datetime
-            print("     Available slot at:  ",
-                  new_starting_datetime.strftime("%H:%M"))
+            """print("     Available slot at:  ",
+                  new_starting_datetime.strftime("%H:%M"))"""
             slotsArray.append(new_starting_datetime.strftime("%H:%M"))
 
             if interval_val <= service_duration_val:
@@ -401,7 +406,7 @@ def slots(branch, service, provider, date, time_lower, time_upper):
             print("There are no appointments available")
             break
 
-    print(slotsArray)
+    # print(slotsArray)
 
     return jsonify({'slots': slotsArray})
 
@@ -416,16 +421,16 @@ def bookings(date):
     for position in position_tupple:
         position_val = position[0]
 
-    print(position_val)
+    # print(position_val)
 
     d = datetime.datetime.strptime(date, '%Y-%m-%d')
 
     if position_val == 1:
-        print("ADMIN PERMISSION")
+        #print("ADMIN PERMISSION")
         bookings_sql = "SELECT service_datetime, services_tbl.duration, services_tbl.name, customers_tbl.lastname, customers_tbl.firstname FROM bookings_tbl INNER JOIN customers_tbl ON customers_tbl.id = bookings_tbl.customer_id INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id WHERE EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s ORDER BY service_datetime ASC;"
         bookings_tupple = conn.execute(bookings_sql, (d.year, d.month, d.day))
     elif position_val == 2:
-        print("MANAGER PERMISSION")
+        #print("MANAGER PERMISSION")
         branch_sql = "SELECT branch_id FROM employees_tbl WHERE id = %s"
         branch_tupple = conn.execute(branch_sql, (g.employee))
 
@@ -437,7 +442,7 @@ def bookings(date):
             bookings_sql, (branch_val, d.year, d.month, d.day))
 
     elif position_val == 3:
-        print("EMPLOYEE PERMISSION")
+        #print("EMPLOYEE PERMISSION")
         bookings_sql = "SELECT service_datetime, services_tbl.duration, services_tbl.name, customers_tbl.lastname, customers_tbl.firstname FROM bookings_tbl INNER JOIN customers_tbl ON customers_tbl.id = bookings_tbl.customer_id INNER JOIN bookings_services_link_tbl ON bookings_services_link_tbl.booking_id = bookings_tbl.id INNER JOIN services_tbl ON services_tbl.id = bookings_services_link_tbl.service_id WHERE EXTRACT(YEAR FROM service_datetime) = %s AND EXTRACT(MONTH FROM service_datetime) = %s AND EXTRACT(DAY FROM service_datetime) = %s AND employee_id = %s ORDER BY service_datetime ASC;"
         bookings_tupple = conn.execute(
             bookings_sql, (d.year, d.month, d.day, g.employee))
@@ -530,8 +535,8 @@ def day(branch, service, provider, year, month, days, time_lower, time_upper):
                 if search(lower, booked_slotsArray, new_starting_datetime, service_duration_val) and new_datetime <= new_ending_datetime:
                     #print("There's at least one available slot")
                     new_starting_datetime = new_datetime
-                    print("- ", day, ", Available slot at:  ",
-                          new_starting_datetime.strftime("%H:%M"))
+                    """print("- ", day, ", Available slot at:  ",
+                          new_starting_datetime.strftime("%H:%M"))"""
 
                     """if interval_val <= service_duration_val:
                         new_starting_datetime += timedelta(minutes=interval_val)
@@ -541,7 +546,7 @@ def day(branch, service, provider, year, month, days, time_lower, time_upper):
 
                     daysArray.append(day)
 
-    print(daysArray)
+    # print(daysArray)
 
     return jsonify({'available_days': daysArray})
 
@@ -557,13 +562,13 @@ def search(lower, list, time_lower, duration):
             list[mid][1] - list[mid][0]).total_seconds() / 60
         if duration <= booked_slot_duration:
             if (time_lower >= list[mid][0] and time_lower < list[mid][1]) or (time_upper > list[mid][0] and time_upper <= list[mid][1]):
-                print("------> This slot is already booked", list[mid])
+                #print("------> This slot is already booked", list[mid])
                 lower = mid + 1
                 globals()['lower'] = lower
                 search(lower, list, list[mid][1], duration)
         else:
             if (list[mid][0] >= time_lower and list[mid][0] < time_upper) or (list[mid][1] > time_lower and list[mid][1] <= time_upper):
-                print("------> This slot is already booked", list[mid])
+                #print("------> This slot is already booked", list[mid])
                 lower = mid + 1
                 globals()['lower'] = lower
                 search(lower, list, list[mid][1], duration)
