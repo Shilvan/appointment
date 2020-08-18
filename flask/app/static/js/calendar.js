@@ -104,6 +104,13 @@ var main = function(){
 					$('#provider-dropdown-title').text("Provider...");
 
 				}
+				else{
+					if (typeof clickedDate != "undefined") {
+						populateTimes(clickedDate);
+
+					}
+
+				}
 
 			});
 
@@ -115,6 +122,10 @@ var main = function(){
 		$('#provider-dropdown-title').text($(this).text());
 		$('#provider-dropdown-title').data("provider", $(this).val());
 		setNewMonth(activeDate); /**/
+		if (typeof clickedDate != "undefined") {
+			populateTimes(clickedDate);
+
+		}
 
 	});
 
