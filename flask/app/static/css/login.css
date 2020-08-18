@@ -13,13 +13,30 @@
 
 
 /**/
-#bookings-section{
-	display: flex;
-	justify-content: space-between;
-
-}
 
 #login-section{
+	display: grid;
+	height: 90vh;
+
+
+	/*
+	grid-auto-rows: 40px;
+	grid-template-columns: auto;
+
+	grid-template-rows: max-content auto max-content;
+	display: grid;
+	grid-template-columns: repeat(7, minmax(20px, 1fr));
+
+	grid-gap: 1px;
+    text-align: center;
+
+
+	grid-template-rows: 25px;
+	grid-auto-rows: 40px;*/
+
+
+
+	/*
 	display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -30,7 +47,7 @@
 	width: 100%;
 	background-color: gray;
 	z-index: 1000;
-
+*/
 
 
 
