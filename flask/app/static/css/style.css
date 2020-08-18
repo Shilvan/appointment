@@ -644,7 +644,7 @@ select:-webkit-autofill:focus {
 
 
 /*NO SELECTION*/
-.togglebtn, .date, #previousmonth, #nextmonth, #dropdown-arrow, #time-filter-dash, .footer-button, .custom-checkbox {
+.togglebtn, .date, #previousmonth, #nextmonth, .dropdown-arrow, #dropdown-arrow, #time-filter-dash, .footer-button, .custom-checkbox, .filter-button, .general-btn, #passwd-reset, .navbar-logo, .dot {
 	/*DISABLE SELECTIVITY OF THE CALENDARS TEXT*/
 	-webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -652,6 +652,8 @@ select:-webkit-autofill:focus {
        -moz-user-select: none; /* Firefox */
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none;
+
+    outline: 0;
 }
 
 
