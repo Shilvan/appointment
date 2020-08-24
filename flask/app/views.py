@@ -196,7 +196,8 @@ def login_dashboard():
         for key in rf.keys():
             data = key
         data_dict = json.loads(data)
-        username = data_dict['username'].lower()
+        #username = data_dict['username'].lower()
+        username = data_dict['username']
         password = data_dict['password']
 
         emp_id = re.findall("^\d+(?=\.)", username)
@@ -335,8 +336,8 @@ def slots(branch, service, provider, date, time_lower, time_upper):
         ending_time_val = time[1]
         # check when there are multiple starting time, choose the one with higher hierarchy
 
-    print("----------- QUERY INFO ----------")
-    print("- Service ID:", service)
+    #print("----------- QUERY INFO ----------")
+    #print("- Service ID:", service)
     # service duration
     service_duration_sql = "SELECT duration FROM services_tbl WHERE id = %s;"
     service_duration_tupple = conn.execute(service_duration_sql, (service))

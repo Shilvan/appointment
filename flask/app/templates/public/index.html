@@ -16,28 +16,25 @@
 <body>
 
   <nav class="expanded-nav nav-style-1">
-    <a class="navbar-logo" style="font-size:40px; color: #e0c89b;">SHILVAN</a>
-    <!--
-    <a class="download-cv">
-      <svg height="20px" width="30px" viewBox="0 0 50 50" ><rect fill="none" height="50" width="50"/><polyline fill="none" points="41,15 28,15 28,2   " stroke="salmon" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><polygon fill="none" points="42,49 8,49 8,1   28,1 42,15 " stroke="salmon" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>Download CV</a>-->
+    <a href="{{ url_for('index') }}" class="navbar-logo">SHILVAN</a>
   </nav>
 
  <nav class="expanded-nav nav-bottom">
     <ul class="navbar-list light-links">
       <li>
-        <a href="{{ url_for('work') }}" class="blink-me">Work</a>
+        <a href="#work" class="blink-me">Work</a>
         <svg class="underline" viewBox="0 0 100 8">
           <line class="path" x1="0" x2="100" stroke="#827459" stroke-width="100" />
         </svg>
       </li>
       <li>
-        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="#contact">Contact</a>
         <svg class="underline" viewBox="0 0 100 8">
           <line class="path" x1="0" x2="100" stroke="#827459" stroke-width="100" />
         </svg>
       </li>
       <li>
-        <a>About</a>
+        <a href="#about">About</a>
         <svg class="underline" viewBox="0 0 100 8">
           <line class="path" x1="0" x2="100" stroke="#827459" stroke-width="100" />
         </svg>
@@ -45,10 +42,92 @@
       </li>
     </ul>
   </nav>
-  <div class="height-style-1"></div>
+  <!--<div class="height-style-1"></div>-->
 
   <main>
-      <p>Novice full-stack developer not afraid to get my feet wet (the weather in England helps).</p>
+    <section class="align-middle">
+      <div></div>
+      <div>
+        <div class="boxed-text"><p>I'm Shilvan, a Software Developer, currently studying Computer Science.</p></div>
+        <a class="general-btn link-btn">Download CV</a>
+      </div>
+      <div></div>
+    </section>
+      
+    <section id="work">
+      <h1><a href="{{ url_for('work') }}" class="breadcrumb-active">Work</a></h1>
+
+      <ul class="project-grid">
+        <li>
+          <a class="project-link" href="{{ url_for('cuttem') }}">
+           <div class="project-label">Cuttem</div>
+           <div class="img-project"></div>
+            
+          </a>
+        </li>
+        <li>
+          <a class="project-link">
+           <div class="project-label">Vaxoo</div>
+           <div class="img-project"></div>
+            
+          </a>
+        </li>
+        <li>
+          <a class="project-link">
+            <div class="project-label">Lina</div>
+            <div class="img-project"></div>
+          </a>
+        </li>
+        <li>
+          <a class="project-link">
+            <div class="project-label">My Portfolio</div>
+            <div class="img-project"></div>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="align-middle" id="about">
+      
+      <h1><a href="{{ url_for('contact') }}" class="breadcrumb-active">About</a></h1>
+
+      <div>
+        
+      </div>
+
+      <div class="boxed-text"><p>I started to code to implement an Arduino to an electronic project around 2014, and I’ve been learning and developing software ever since. Coming up with different approaches when a problem appears is my favourite part.</p></div>
+      <div class="content-wrapper">
+        <ul>
+          <h2>Skills</h2>
+          <li>
+            <h3>FRONT END:</h3><p>Html, Css, Javascript</p>
+          </li>
+          <li>
+            <h3>BACK END:</h3><p>Python, C#, Postgresql.</p>
+          </li>
+          <li>
+            <h3>DEVOPS:</h3><p>Linux system administration, Vagrant, Docker, Git.</p>
+          </li>
+        </ul>
+      </div>
+      
+
+      <a class="general-btn link-btn" style="font-size: 1rem; padding-bottom: 0.5rem;">Download CV</a>
+     
+    </section>
+
+    <section id="contact" class="align-middle">
+       <h1><a href="{{ url_for('contact') }}" class="breadcrumb-active">Contact</a></h1>
+
+       <div class="links-container">
+          <h4>EMAIL:</h4>
+          <a href="" class="external-link">5.Shilvandacosta@gmail.com</a>
+          <h4>GITHUB:</h4>
+          <a href="" class="external-link">Shilvan</a>
+          <h4>LINKEDIN:</h4>
+          <a href="" class="external-link">Shilvan Tavares</a>
+       </div> 
+    </section>
     
   </main>
 
