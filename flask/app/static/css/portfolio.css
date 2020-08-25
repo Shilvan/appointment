@@ -481,7 +481,7 @@ nav{
 	display: none;
 
 	background-color: rgb(0,0,0); /* Fallback color */
-  	background-color: rgba(0,0,0,0.35); /* Black w/ opacity */
+  	background-color: rgba(0,0,0,0.45); /* Black w/ opacity */
 
 
 
@@ -539,6 +539,9 @@ nav{
 }
 
 @media screen and (max-width: 700px){
+	.work-display{
+		height: 50vh;
+	}
 	
 
 }
