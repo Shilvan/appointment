@@ -45,12 +45,25 @@ a{
 
 }
 
+/*Sections*/
 .align-middle{
 	display: grid;
-
-	grid-template-rows: auto max-content auto; 
+	align-items: center;
+	/*grid-template-rows: auto max-content auto; */
 
 }
+
+#home{
+	padding-top: calc(10vh + 1.8rem);
+
+}
+
+#contact{
+	grid-template-rows: max-content auto;
+
+}
+
+/*Text*/
 
 h1{
 	/*margin-bottom: 5vh;*/
@@ -213,7 +226,7 @@ nav{
 	left: 0;
     width: 100%;
     height: max-content;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.7rem;
     padding-top: 0.3rem; 
 }
 
