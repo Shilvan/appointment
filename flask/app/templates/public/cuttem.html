@@ -17,39 +17,17 @@
     <a class="navbar-logo" href="{{ url_for('index') }}" style="font-size:40px; color: #e0c89b;">SHILVAN</a>
   </nav>
 
- <nav class="expanded-nav nav-bottom">
-    <ul class="navbar-list light-links">
-      <li class="active">
-          <a href="{{ url_for('work') }}">Work</a>
-          <svg class="underline" viewBox="0 0 100 8">
-            <line class="path" x1="0" x2="100" stroke="#827459" stroke-width="100" />
-          </svg>
-        </li>
-        <li>
-          <a href="{{ url_for('contact') }}">Contact</a>
-          <svg class="underline" viewBox="0 0 100 8">
-            <line class="path" x1="0" x2="100" stroke="#827459" stroke-width="100" />
-          </svg>
-        </li>
-        <li>
-          <a>About</a>
-          <svg class="underline" viewBox="0 0 100 8">
-            <line class="path" x1="0" x2="100" stroke="#827459" stroke-width="100" />
-          </svg>
-        </li>
-    </ul>
-  </nav>
-  <div class="height-style-1"></div>
+ 
 
   <main>
     <section class="align-middle">
-       <h1><a href="{{ url_for('work') }}" class="breadcrumb-link">Work</a><span class="breadcrumb-separation">></span><a href="{{ url_for('cuttem') }}" class="breadcrumb-active">Cuttem</a>
+       <h1><a href="{{ url_for('index') }}" class="breadcrumb-link">Work</a><span class="breadcrumb-separation">></span><a href="{{ url_for('cuttem') }}" class="breadcrumb-active">Cuttem</a>
       </h1>
 
        <div class="links-container">
-          <h3>PUBLIC VIEW:</h3>
+          <h3 style="text-align: center">PUBLIC VIEW:</h3>
           <a href="{{ url_for('appointment') }}" class="external-link">www.appointment.com</a>
-          <h3>DASHBOARD:</h3>
+          <h3 style="text-align: center">DASHBOARD:</h3>
           <a href="{{ url_for('dashboard') }}" class="external-link">www.dashboard.com</a>
        </div>
     </section>

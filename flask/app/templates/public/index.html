@@ -46,11 +46,10 @@
           <div class="work-display">
         
             <div>
-              
               <h1>Cuttem</h1>
               <h2>Overview</h2>
               <p>A website that allows clients to book appointments, and employees to manage them.</p>
-              <a href="" class="general-btn bordered-btn">Live View</a>
+              <a href="{{ url_for('cuttem') }}" class="general-btn bordered-btn">Live View</a>
               <a href="" class="general-btn bordered-btn">Source Code</a>
               <ul class="tech-used">
                 <h2>Technologies Used</h2>
@@ -84,11 +83,11 @@
     </section>
       
     <section id="work">
-      <h1><a href="{{ url_for('work') }}" class="breadcrumb-active">Work</a></h1>
+      <h1><a class="breadcrumb-active">Work</a></h1>
 
       <ul class="project-grid">
         <li>
-          <a class="project-link" href="{{ url_for('cuttem') }}">
+          <a class="project-link">
            <div class="project-label">Cuttem</div>
            <div class="img-project"></div>
             
@@ -118,7 +117,7 @@
 
 
     <section id="contact" class="align-middle">
-       <h1><a href="{{ url_for('contact') }}" class="breadcrumb-active">Contact</a></h1>
+       <h1><a class="breadcrumb-active">Contact</a></h1>
 
        <div class="links-container">
           <h4>EMAIL:</h4>
