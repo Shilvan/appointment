@@ -644,7 +644,7 @@ select:-webkit-autofill:focus {
 
 
 /*NO SELECTION*/
-.togglebtn, .date, #previousmonth, #nextmonth, .dropdown-arrow, #dropdown-arrow, #time-filter-dash, .footer-button, .custom-checkbox, .filter-button, .general-btn, #passwd-reset, .navbar-logo, .dot {
+.togglebtn, .date, #previousmonth, #nextmonth, .dropdown-arrow, #dropdown-arrow, #time-filter-dash, .footer-button, .custom-checkbox, .filter-button, .general-btn, #passwd-reset, .navbar-logo, .dot, .nav-bottom, .links-container h4 {
 	/*DISABLE SELECTIVITY OF THE CALENDARS TEXT*/
 	-webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
