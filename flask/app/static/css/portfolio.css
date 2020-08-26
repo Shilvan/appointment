@@ -157,9 +157,6 @@ section{
 	display: grid;
 	align-items: center;
 }
-#home{
-	padding-top: calc(10vh + 1.8rem);
-}
 #contact{
 	grid-template-rows: max-content auto;
 }
@@ -336,4 +333,9 @@ section{
 
 }
 
+@media screen and (max-height: 500px){
+	#home{
+		padding-top: calc(10vh + 1.8rem);
+	}
+}
 
