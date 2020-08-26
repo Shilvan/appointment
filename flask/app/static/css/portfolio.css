@@ -34,7 +34,7 @@ h3{
 	font-size: 0.8rem;
 }
 h4{
-	padding: 0.5rem;
+	padding: 0.3rem;
 	text-align: center;
 	color: #827459;
 	font-size: 0.7rem;
@@ -45,12 +45,14 @@ p{
 	line-height: 1.4;
 }
 .external-link{
+	padding: 0.3rem;
 	text-align: center;
 	display: block;
 	color: #e0c89b;
-	margin-bottom: 1.5rem;
+	margin: 0 auto 1rem;
 	transition: 300ms ease-in-out;
 	font-size: 0.8rem;
+	width: max-content;
 }
 .breadcrumb-link{
 	color: #827459; 
