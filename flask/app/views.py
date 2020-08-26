@@ -45,16 +45,6 @@ def index():
     return render_template("public/index.html")
 
 
-@app.route("/contact")
-def contact():
-    return render_template("public/contact.html")
-
-
-@app.route("/work")
-def work():
-    return render_template("public/work.html")
-
-
 @app.route("/work/cuttem")
 def cuttem():
     return render_template("public/cuttem.html")
