@@ -187,14 +187,23 @@ section{
 	opacity: 0.3;
 }
 .img-project{
+	transition: 300ms ease-in-out;
 	background-color: #e0c89b;
 	width: 10rem;
 	height: 10rem;
 }
 .project-label{
+	transition: 300ms ease-in-out;
 	color: #e0c89b;
 	font-size: 1rem;
 	margin-bottom: 0.6rem;
+}
+
+.project-link:hover .project-label{
+	color: salmon;
+}
+.project-link:hover .img-project{
+	background-color: salmon;
 }
 
 
@@ -301,6 +310,7 @@ section{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 
 /*MEDIA QUERIES*/
 @media screen and (min-width: 800px){
