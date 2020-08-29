@@ -37,15 +37,15 @@ var main = function(){
 		});
 
 		$("#code-btn").css("display", "inline-block");
-		$("#code-btn").attr("href", "https://www.github.com/shilvan");
+		$("#code-btn").attr("href", "https://www.github.com/shilvan/appointment");
 
 	});
 
-	$("#vaxoo").on("click", function(){
+	$("#ecommerce").on("click", function(){
 		$(".work-display-wrapper").css("display", "grid");
 
-		$("#title").text("Vaxoo");
-		$("#description").text("E-commerce website");
+		$("#title").text("E-Commerce");
+		$("#description").text("E-Commerce website");
 		$(".tech-used").append('<li>wordpress</li>');
 		$(".tech-used").append('<li>woo-commerce</li>');
 		$(".tech-used").append('<li>stripe api</li>');
@@ -80,7 +80,7 @@ var main = function(){
 		});
 
 		$("#code-btn").css("display", "inline-block");
-		$("#code-btn").attr("href", "https://www.github.com/shilvan");
+		$("#code-btn").attr("href", "https://www.github.com/shilvan/csharp-calculator");
 
 	});
 
@@ -108,7 +108,7 @@ var main = function(){
 		});
 
 		$("#code-btn").css("display", "inline-block");
-		$("#code-btn").attr("href", "https://www.github.com/shilvan");
+		$("#code-btn").attr("href", "https://www.github.com/shilvan/appointment");
 
 	});
 
