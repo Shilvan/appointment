@@ -1,47 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Shilvan | Work - Cuttem</title>
-  <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
-  <meta name="viewport" content ="width=device-width,initial-scale=1.0,user-scalable=yes" />
+	<title>Appointment Dashboard</title>
+	<link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
+	<meta name="viewport" content ="width=device-width,initial-scale=1.0,user-scalable=yes" />
 
-  <!--<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />-->
-  <link rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}">
+	<!--<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />-->
+	<link rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}">
 
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/portfolio.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dash.css') }}">
 </head>
+<body class="bg-gray">
 
-<body>
 
-  <nav class="expanded-nav nav-style-1">
-    <a class="navbar-logo" href="{{ url_for('index') }}" style="font-size:40px; color: #e0c89b;">SHILVAN</a>
-  </nav>
+	
+	<main id="index-main">
+		<section id="index-section">
+      <h1 class="page-header">Try Cuttem</h1>
+      <div id="index-section-wrapper">
+        <div class="index-module" style="margin-left: auto">
+          <div class="module-inner">
+            <svg class="main-icon" style="enable-background:new 0 0 50 50;" version="1.1" viewBox="0 0 50 50" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Layer_1_1_"><path d="M41,1h-2v5H11V1H9v5H1v14v29h48V20V6h-8V1z M47,47H3V20h44V47z M47,8v10H3V8h6v5h2V8h28v5h2V8H47z"/></g></svg>
+            <h2>Booking</h2>
+            <p>Use the sandbox environment to make a booking</p>
+          </div>
+        </div>
+        <div class="index-module" style="margin-right: auto">
+          <div class="module-inner">
+            <svg class="main-icon" enable-background="new 0 0 32 32" version="1.1" viewBox="0 0 32 32"><g><g id="Guide"/><g id="Notification"/><g id="New_Notification"/><g id="Statistic"><g><line fill="none" stroke="#1D1D1B" stroke-miterlimit="10" x1="2.9" x2="29.1" y1="26.6" y2="26.6"/><rect fill="none" height="12.6" stroke="#1D1D1B" stroke-miterlimit="10" width="3.8" x="6.8" y="14"/><rect fill="none" height="16.2" stroke="#1D1D1B" stroke-miterlimit="10" width="3.8" x="14.1" y="10.4"/><rect fill="none" height="19.9" stroke="#1D1D1B" stroke-miterlimit="10" width="3.8" x="21.4" y="6.7"/></g></g><g id="Favorite"/><g id="Checkbox"/><g id="Writing"/><g id="Italic"/><g id="Underline"/><g id="Setting"/><g id="Power"/></g></svg>
+            <h2>Dashboard</h2>
+            <p>Access the dashboard to view the bookings</p>
+          </div>
+        </div>
+        
+      </div>
+      
+      
+	
+		</section>
 
- 
+	</main>
+	<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script src="{{ url_for('static', filename='js/inputmask/dist/jquery.inputmask.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/inputmask/dist/bindings/inputmask.binding.js') }}"></script>
 
-  <main>
-    <section class="align-middle">
-       <h1><a href="{{ url_for('index') }}" class="breadcrumb-link">Work</a><span class="breadcrumb-separation">></span><a href="{{ url_for('cuttem') }}" class="breadcrumb-active">Cuttem</a>
-      </h1>
-
-       <div class="links-container">
-          <h3 style="text-align: center">PUBLIC VIEW:</h3>
-          <a href="{{ url_for('appointment') }}" class="external-link">www.appointment.com</a>
-          <h3 style="text-align: center">DASHBOARD:</h3>
-          <a href="{{ url_for('dashboard') }}" class="external-link">www.dashboard.com</a>
-       </div>
-    </section>
-   
-  </main>
-
-  <div class="height-style-1"></div>
-
-  <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-  <script src="{{ url_for('static', filename='js/inputmask/dist/jquery.inputmask.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/inputmask/dist/bindings/inputmask.binding.js') }}"></script>
-
-  <!--<script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script> custom bar-->
-  <!--<script src="static/js/calendar.js"></script>-->
+	<!--<script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script> custom bar-->
+	<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
 </html>

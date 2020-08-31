@@ -296,6 +296,60 @@ nav{
 }
 
 
+/*INDEX*/
+#index-main{
+	display: grid;
+    height: 100vh;
+    margin-bottom: 20vh;
+    align-items: center;
+}
+#index-section{
+	background-color: white;
+	height: max-content;
+	max-width: 1200px;
+}
+#index-section h1{
+	font-size: 40px;
+	padding: 10px;
+	margin-top: 30px;
+}
+
+#index-section-wrapper{
+	margin: 10px 0 40px;
+	display: flex;
+}
+.index-module{
+	width: 30%;
+	margin:5px;
+}
+.module-inner{
+	margin: 5px;
+	padding: 20px;
+	border-radius: 3px;
+    border: solid 1px gray;
+    background-color: white;
+
+}
+.module-inner:hover{
+	background-color: lightgray;
+}
+.index-module h2{
+	padding: 10px 5px 5px;
+}
+.index-module p{
+	font-size: 20px;
+	padding: 5px;
+}
+
+.main-icon{
+	width: 100px;
+	margin:auto;
+	display: block;
+
+}
+
+
+
 
 @media screen and (max-width: 1000px){
 	
@@ -313,13 +367,23 @@ nav{
 	    width: 95%;
 	}
 
+
+}
+@media screen and (max-width: 800px){
+	
+	.index-module{
+		width: 45%;
+	}
+
+
 }
 
 @media screen and (max-width: 700px){
 	#bookings-section{
 		flex-direction: column;
-		
 	}
+
+
 
 	.time-list li{
 		margin: 0 5px;
@@ -350,6 +414,22 @@ nav{
 	}
 
 }
+
+@media screen and (max-width: 500px){
+	#index-section-wrapper{
+		flex-direction: column;
+
+	}
+	.index-module{
+		width: 90%;
+		margin: auto;
+	}
+
+
+}
+
+
+
 
 
 /*
