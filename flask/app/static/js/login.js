@@ -165,7 +165,7 @@ var main = function(){
 			console.log(data);
 
 			$.ajax({
-				url: '/dashboard/login',
+				url: '/cuttem/dashboard/login',
 				type: 'POST',
 				data: JSON.stringify(data),
 				dataType: 'json'
@@ -174,7 +174,7 @@ var main = function(){
 				console.log("Result returning from flask");
 
 				if (data.msg == "Successful") {
-					location.replace('/dashboard');
+					location.replace('/cuttem/dashboard');
 				}else{
 					alert("INCORRECT PASSWORD OR USERNAME");
 				}
