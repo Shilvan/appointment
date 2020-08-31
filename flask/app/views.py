@@ -45,12 +45,12 @@ def index():
     return render_template("public/index.html")
 
 
-@app.route("/work/cuttem")
+@app.route("/cuttem")
 def cuttem():
     return render_template("public/cuttem.html")
 
 
-@app.route("/appointment/login", methods=["POST", "GET"])
+@app.route("/cuttem/booking/login", methods=["POST", "GET"])
 def login_public():
     if request.method == 'POST':
         #session.pop('user_id', None)
@@ -99,41 +99,50 @@ def login_public():
     return render_template("public/login-public.html")
 
 
-@app.route("/appointment/logout", methods=["POST", "GET"])
+@app.route("/cuttem/booking/logout", methods=["POST", "GET"])
 def logout_public():
     session.pop('user_id', None)
     return redirect(url_for('appointment'))
 
 
-@app.route("/appointment/register", methods=["POST"])
+@app.route("/cuttem/booking/register", methods=["POST", "GET"])
 def register_public():
-    rf = request.form
-    for key in rf.keys():
-        data = key
-    data_dict = json.loads(data)
+    if request.method == 'POST':
+        rf = request.form
+        for key in rf.keys():
+            data = key
+        data_dict = json.loads(data)
 
-    hashed_password = generate_password_hash(
-        data_dict['password'], method='sha256')
+        hashed_password = generate_password_hash(
+            data_dict['password'], method='sha256')
 
-    conn = engine.connect()
-    register_sql = "INSERT INTO customers_tbl (firstname, lastname, username, password, email, phone) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;"
-    register_tupple = conn.execute(register_sql, (data_dict['firstname'], data_dict['lastname'],
-                                                  data_dict['username'].lower(), hashed_password, data_dict['email'], data_dict['phone']))
+        conn = engine.connect()
+        register_sql = "INSERT INTO customers_tbl (firstname, lastname, username, password, email, phone) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;"
+        register_tupple = conn.execute(register_sql, (data_dict['firstname'], data_dict['lastname'],
+                                                      data_dict['username'].lower(), hashed_password, data_dict['email'], data_dict['phone']))
 
-    for register_id in register_tupple:
-        user_id = register_id[0]
+        for register_id in register_tupple:
+            user_id = register_id[0]
 
-    resp_dic = {}
+        resp_dic = {}
 
-    session['user_id'] = user_id
-    resp_dic = {'msg': 'Successful'}
+        session['user_id'] = user_id
+        resp_dic = {'msg': 'Successful'}
 
-    resp = jsonify(resp_dic)
-    return resp
+        resp = jsonify(resp_dic)
+        return resp
+    if not g.user:
+        print("----> USER NOT LOGGED IN")
+    else:
+        print("----> USER LOGGED IN ALREADY")
+        print(g.user)
+        return redirect(url_for('appointment'))
+
+    return render_template("public/login-public.html")
     # return redirect(url_for('work'))
 
 
-@app.route("/appointment", methods=["POST", "GET"])
+@app.route("/cuttem/booking", methods=["POST", "GET"])
 def appointment():
     if request.method == 'POST':
         rf = request.form
@@ -170,14 +179,14 @@ def appointment():
         return render_template("public/appointment.html")
 
 
-@app.route("/dashboard")
+@app.route("/cuttem/dashboard")
 def dashboard():
     if not g.employee:
         return redirect(url_for('login_dashboard'))
     return render_template("admin/dashboard.html")
 
 
-@app.route("/dashboard/login", methods=["POST", "GET"])
+@app.route("/cuttem/dashboard/login", methods=["POST", "GET"])
 def login_dashboard():
     if request.method == 'POST':
         #session.pop('user_id', None)
@@ -234,23 +243,23 @@ def login_dashboard():
     return render_template("admin/login-dashboard.html")
 
 
-@app.route("/dashboard/logout")
+@app.route("/cuttem/dashboard/logout")
 def logout_dashboard():
     session.pop('employee_id', None)
     return redirect(url_for('dashboard'))
 
 
-@app.route("/dashboard/manage")
+@app.route("/cuttem/dashboard/manage")
 def manage():
     return render_template("admin/manage.html")
 
 
-@app.route("/dashboard/settings")
+@app.route("/cuttem/dashboard/settings")
 def settings():
     return render_template("admin/settings.html")
 
 
-@app.route("/dashboard/help")
+@app.route("/cuttem/dashboard/help")
 def help():
     return render_template("admin/help.html")
 

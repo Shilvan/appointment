@@ -42,14 +42,14 @@ var main = function(){
 			var data = {'username': username, 'password': password};
 
 			$.ajax({
-				url: '/appointment/login',
+				url: '/cuttem/booking/login',
 				type: 'POST',
 				data: JSON.stringify(data),
 				dataType: 'json'
 			}).done(function(data){
 
 				if (data.msg == "Successful") {
-					location.replace('/appointment');
+					location.replace('/cuttem/booking');
 				}else{
 					alert("INCORRECT PASSWORD OR USERNAME");
 				}
@@ -94,14 +94,14 @@ var main = function(){
 				var data = {'firstname': firstname, 'lastname': lastname, 'username': username, 'password': password, 'email': email, 'phone': phone};
 
 				$.ajax({
-					url: '/appointment/register',
+					url: '/cuttem/booking/register',
 					type: 'POST',
 					data: JSON.stringify(data),
 					dataType: 'json'
 				}).done(function(data){
 
 					if (data.msg == "Successful") {
-						location.replace('/appointment');
+						location.replace('/cuttem/booking');
 					}else{
 						alert("Error");
 					}

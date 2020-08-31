@@ -33,7 +33,7 @@ var main = function(){
 		$("#demo-btn").css("display", "inline-block");
 		/*$("#demo-btn").attr("href", "{{ url_for('cuttem') }}");*/
 		$("#demo-btn").on("click", function(){
-			location.assign("/appointment");
+			location.assign("/cuttem");
 		});
 
 		$("#code-btn").css("display", "inline-block");

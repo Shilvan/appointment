@@ -329,6 +329,8 @@ nav{
 	border-radius: 3px;
     border: solid 1px gray;
     background-color: white;
+    text-decoration: none;
+    color: black;
 
 }
 .module-inner:hover{
