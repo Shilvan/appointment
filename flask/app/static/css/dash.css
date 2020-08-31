@@ -321,6 +321,7 @@ nav{
 .index-module{
 	width: 30%;
 	margin:5px;
+	display: flex;
 }
 .module-inner{
 	margin: 5px;
