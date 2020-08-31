@@ -460,7 +460,7 @@ var main = function(){
 			var data = {'date': postgres_date, 'time': time, 'service': service, 'provider': provider};
 			
 			$.ajax({
-				url: '/cuttem/dashboard',
+				url: '/cuttem/booking',
 				type: 'POST',
 				data: JSON.stringify(data),
 				dataType: 'json'
