@@ -229,57 +229,7 @@ var main = function(){
 				});
 			});
 		});
-
-		/*
-		var firstDayDate = new Date(d.getFullYear(), d.getMonth(), first_available_day);
-		var firstDay = firstDayDate.getDay();
-		if (firstDay == 0) { firstDay = 7;};
 		
-
-
-		$("#dropdown-list > label > input:checked").each(function(){
-
-			console.log("apply the day filter")
-
-			var chosenDay = $(this).val();
-			var position;
-			if (chosenDay >= firstDay) {
-				position = chosenDay - firstDay + 1;
-			}
-			else{
-				position = 7 - (firstDay - chosenDay -1);
-			}
-
-			$(".number:nth-child(7n+"+ position + ")").each(function(){
-				//$(this).off();
-				//console.log($(this));
-				$(this).css("cursor", "pointer");
-				$(this).css("color","red");
-				$(this).on("click", clickHandler);
-				$(this).on("mouseenter", mouseenterHandler);
-				$(this).on("mouseleave", mouseleaveHandler);
-			});
-
-		});*/
-
-
-		/*
-
-		if (typeof clickedDate != "undefined") {
-
-			var clickedDay = (clickedDate.getDay() ==0) ? 7 : clickedDate.getDay();
-
-			$("#dropdown-list > label > input:not(:checked)").each(function(){
-				if (clickedDay == $(this).val()) {
-					console.log("The clicked date has been filtered out");
-					$(".number:nth-child(n)").css("background-color", "transparent");
-					clickedDate = undefined;
-					$(".time-wrapper").css("display","none");
-				}
-			});
-		};*/
-		
-
 	};
 	
 	var mouseenterHandler = function() {
@@ -295,8 +245,6 @@ var main = function(){
 			
 		if (typeof(clickedDate) == "undefined" || selectedDate.getDate() != clickedDate.getDate() || selectedDate.getMonth() != clickedDate.getMonth() || selectedDate.getFullYear() != clickedDate.getFullYear()) {
 		
-			//console.log("selected");
-
 			activeDate = new Date(selectedDate.getFullYear(),selectedDate.getMonth());
 			clickedDate = selectedDate;
 			console.log(clickedDate);
@@ -472,14 +420,6 @@ var main = function(){
 
 		}
 
-		//var readable_date = weekdays[clickedDate.getDay()]+", "+clickedDate.getDate()+" "+months[clickedDate.getMonth()]+" "+clickedDate.getFullYear();
-		
-		
-	
-		/*display confirmed page
-		$("header").css("display", "none");
-		$("main").css("display", "none");
-		$(".confirmed-view").css("display", "grid");*/
 	});
 
 	$("#nextbtn").on("click", function(event){

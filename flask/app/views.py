@@ -535,14 +535,6 @@ def day(branch, service, provider, year, month, days, time_lower, time_upper):
                 if search(lower, booked_slotsArray, new_starting_datetime, service_duration_val) and new_datetime <= new_ending_datetime:
                     #print("There's at least one available slot")
                     new_starting_datetime = new_datetime
-                    """print("- ", day, ", Available slot at:  ",
-                          new_starting_datetime.strftime("%H:%M"))"""
-
-                    """if interval_val <= service_duration_val:
-                        new_starting_datetime += timedelta(minutes=interval_val)
-                    else:
-                        new_starting_datetime += timedelta(
-                            minutes=service_duration_val)"""
 
                     daysArray.append(day)
 
@@ -579,78 +571,3 @@ def search(lower, list, time_lower, duration):
             upper = mid - 1
 
     return True  # the slot is available
-
-
-"""
-    datetime = 'add the time at which the shift starts as a timestamp'
-
-    shift_ending_time = 'ending time query - the duration of the service query'
-
-    slotsArray = []
-
-    while datetime <= shift_ending_time:
-
-        time = datetime.strftime("%H:%M")
-        slotsArray.append(time)
-
-        # datetime + 30mins"""
-
-
-# AVAILABLE SLOTS
-
-"""
-Function (date):
-    *First check if the date is available
-
-    check the time at which the employee starts working and start the loop
-
-        *if the time is outside the current day shift_ending_time
-            -break
-
-        else
-            if that time is a blocked slot
-                -Continue (to when the blocked slot ends)
-
-            if that time has a shift break 
-                -Continue (to when the break ends)
-
-            if there's a booking at that time
-                -Continue (to when the booking ends + 5 mins approximating its ending to 5 or 0)
-
-            else
-                -make the slot available
-                -Continue (next available slot 15 or 30 min)
-"""
-"""
-@app.route('/available_times_in/<year>/<month>/<day>')
-def time(year, month, day):
-    conn = engine.connect()
-    sql = "SELECT UNNEST(available_times) FROM dates WHERE EXTRACT(YEAR from day) = %s AND EXTRACT(MONTH from day) = %s AND EXTRACT(DAY from day) = %s;"
-    # add "as" after unnest to set the new name of the column instead of unnest.
-    times = conn.execute(sql, (year, month, day))
-
-    timesArray = []
-
-    for time in times:
-        timesArray.append(time.unnest)
-
-    return jsonify({'available_times': timesArray})
-"""
-
-
-# AVAILABLE DAYS
-"""
-function (date):
-    if the date between that the employees shift start and end
-        -The day is available
-
-    else if the day is blocked
-        -The day is not available
-
-    else if the day is full with bookings and breaks
-        -The day is not available
-
-
-    else
-        -The day is not available
-"""
