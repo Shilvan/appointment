@@ -508,7 +508,7 @@ var main = function(){
 		$("#review-data").css("display", "block");
 		$("#confirmbtn").css("display", "block");
 		$("#editbtn").css("display", "block");
-		$(".page-header").text("CONFIRM APPOINTMENT");
+		$(".page-header").text("CONFIRM BOOKING");
 
 	});
 
@@ -516,7 +516,7 @@ var main = function(){
 		$("#nextbtn").css("display", "block");
 		$("#user-data").css("display", "block");
 		$("#date-and-time").css("display", "block");
-		$(".page-header").text("BOOK APPOINTMENT");
+		$(".page-header").text("BOOK BOOKING");
 
 		$("#review-data").css("display", "none");
 		$("#confirmbtn").css("display", "none");

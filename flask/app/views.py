@@ -63,7 +63,7 @@ def login_public():
         password = data_dict['password']
 
         conn = engine.connect()
-        password_sql = "SELECT password FROM customers_tbl WHERE username = %s;"
+        password_sql = "SELECT password FROM customers_tbl WHERE LOWER(username) = %s;"
         password_tupple = conn.execute(password_sql, (username.lower()))
 
         hashed_password = None
@@ -75,8 +75,8 @@ def login_public():
         resp_dic = {}
 
         if login_val == True:
-            customer_sql = "SELECT id FROM customers_tbl WHERE username = %s;"
-            customer_tupple = conn.execute(customer_sql, (username))
+            customer_sql = "SELECT id FROM customers_tbl WHERE LOWER(username) = %s;"
+            customer_tupple = conn.execute(customer_sql, (username.lower()))
             for customer in customer_tupple:
                 user_id = customer[0]
 
@@ -94,7 +94,7 @@ def login_public():
     else:
         print("----> USER LOGGED IN ALREADY")
         print(g.user)
-        return redirect(url_for('appointment'))
+        return redirect(url_for('booking'))
 
     return render_template("public/login-public.html")
 
@@ -102,7 +102,7 @@ def login_public():
 @app.route("/cuttem/booking/logout", methods=["POST", "GET"])
 def logout_public():
     session.pop('user_id', None)
-    return redirect(url_for('appointment'))
+    return redirect(url_for('booking'))
 
 
 @app.route("/cuttem/booking/register", methods=["POST", "GET"])
@@ -136,14 +136,14 @@ def register_public():
     else:
         print("----> USER LOGGED IN ALREADY")
         print(g.user)
-        return redirect(url_for('appointment'))
+        return redirect(url_for('booking'))
 
     return render_template("public/login-public.html")
     # return redirect(url_for('work'))
 
 
 @app.route("/cuttem/booking", methods=["POST", "GET"])
-def appointment():
+def booking():
     if request.method == 'POST':
         rf = request.form
         for key in rf.keys():
@@ -176,7 +176,7 @@ def appointment():
         if not g.user:
             return redirect(url_for('login_public'))
 
-        return render_template("public/appointment.html")
+        return render_template("public/booking.html")
 
 
 @app.route("/cuttem/dashboard")
@@ -403,7 +403,7 @@ def slots(branch, service, provider, date, time_lower, time_upper):
                 new_starting_datetime += timedelta(
                     minutes=service_duration_val)
         else:
-            print("There are no appointments available")
+            print("There are no bookings available")
             break
 
     # print(slotsArray)

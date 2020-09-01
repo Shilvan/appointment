@@ -14,11 +14,11 @@ var main = function(){
 	});
 
 
-	$("#appointment").on("click", function(){
+	$("#booking").on("click", function(){
 		$(".work-display-wrapper").css("display", "grid");
 
-		$("#title").text("Appointment");
-		$("#description").text("A website that allows clients to book appointments, and employees to manage them.");
+		$("#title").text("Booking");
+		$("#description").text("A website that allows clients to make bookings, and employees to manage them.");
 		$(".tech-used").append('<li>html</li>');
 		$(".tech-used").append('<li>css</li>');
 		$(".tech-used").append('<li>js</li>');
@@ -108,7 +108,7 @@ var main = function(){
 		});
 
 		$("#code-btn").css("display", "inline-block");
-		$("#code-btn").attr("href", "https://www.github.com/shilvan/appointment");
+		$("#code-btn").attr("href", "https://www.github.com/shilvan/my-portfolio");
 
 	});
 
