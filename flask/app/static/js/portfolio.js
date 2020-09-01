@@ -53,10 +53,8 @@ var main = function(){
 		$("#more-details").text("More detailed info about everything, More detailed info about everything, More detailed info about everything, More detailed info about everything, More detailed info about everything, More detailed info about everything");
 
 		$("#demo-btn").css("display", "inline-block");
-		/*$("#demo-btn").attr("href", "{{ url_for('cuttem') }}");*/
-		$("#demo-btn").on("click", function(){
-			location.assign("https://staging.vaxoo.co.uk/");
-		});
+		$("#demo-btn").attr("href", "https://staging.vaxoo.co.uk");
+		
 
 		$("#code-btn").css("display", "none");
 		$("#code-btn").attr("href", "https://www.github.com/shilvan");
