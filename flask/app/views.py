@@ -59,12 +59,12 @@ def login_public():
         for key in rf.keys():
             data = key
         data_dict = json.loads(data)
-        username = data_dict['username'].lower()
+        username = data_dict['username']
         password = data_dict['password']
 
         conn = engine.connect()
         password_sql = "SELECT password FROM customers_tbl WHERE username = %s;"
-        password_tupple = conn.execute(password_sql, (username))
+        password_tupple = conn.execute(password_sql, (username.lower()))
 
         hashed_password = None
         for password_result in password_tupple:
@@ -214,9 +214,9 @@ def login_dashboard():
         #print(username, id_val, lastname_val, password)
 
         conn = engine.connect()
-        login_sql = "SELECT exists (SELECT id FROM employees_tbl WHERE id = %s AND lastname = %s AND password = %s);"
+        login_sql = "SELECT exists (SELECT id FROM employees_tbl WHERE id = %s AND LOWER(lastname) = %s AND password = %s);"
         login_tupple = conn.execute(
-            login_sql, (id_val, lastname_val, password))
+            login_sql, (id_val, lastname_val.lower(), password))
 
         for login_result in login_tupple:
             login_val = login_result[0]
